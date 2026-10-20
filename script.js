@@ -42,7 +42,7 @@ const SESSIONS = [
         id: "morning",
         name: "Manhã",
         start: "07:00",
-        end: "09:30"
+        end: "14:30"
     },
     {
         id: "afternoon",
