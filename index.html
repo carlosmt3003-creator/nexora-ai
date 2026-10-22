@@ -16,7 +16,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
-    <link rel="shortcut icon" href="icons8-dinheiro-16.png" type="image/x-icon">
+  <link rel="shortcut icon" href="icons8-dinheiro-16.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
@@ -845,6 +845,89 @@
                     </aside>
 
                 </section>
+                                </section>
+
+                <!-- CONTADOR GREEN / RED -->
+                <section class="results-counter panel" id="resultsCounter" aria-labelledby="resultsCounterTitle">
+
+                    <div class="counter-header">
+                        <div>
+                            <span class="section-label">CONTROLE DE RESULTADOS</span>
+                            <h3 id="resultsCounterTitle">GREEN / RED</h3>
+                            <p>  Acompanhe seus GREENS e REDS por jogo. Registre cada resultado manualmente; contabilize o RED somente após 1 gale.</p>
+                        </div>
+
+                        <span class="counter-storage">
+                            <span class="status-dot"></span>
+                            SALVO NO NAVEGADOR
+                        </span>
+                    </div>
+
+                    <div class="counter-game-name" id="counterGameName">
+                        Mega Sic Bac
+                    </div>
+
+                    <div class="counter-grid">
+
+                        <!-- CONTADOR GREEN -->
+                        <article class="counter-card counter-green">
+                            <div class="counter-card-heading">
+                                <span class="counter-indicator"></span>
+                                <span>GREEN</span>
+                            </div>
+
+                            <strong class="counter-number" id="greenCount" aria-live="polite">0</strong>
+
+                            <div class="counter-actions">
+                                <button
+                                    type="button"
+                                    data-counter-action="green-decrease"
+                                    aria-label="Diminuir GREEN"
+                                >−</button>
+
+                                <button
+                                    type="button"
+                                    data-counter-action="green-increase"
+                                    aria-label="Adicionar GREEN"
+                                >+</button>
+                            </div>
+                        </article>
+
+                        <!-- CONTADOR RED -->
+                        <article class="counter-card counter-red">
+                            <div class="counter-card-heading">
+                                <span class="counter-indicator"></span>
+                                <span>RED</span>
+                            </div>
+
+                            <strong class="counter-number" id="redCount" aria-live="polite">0</strong>
+
+                            <div class="counter-actions">
+                                <button
+                                    type="button"
+                                    data-counter-action="red-decrease"
+                                    aria-label="Diminuir RED"
+                                >−</button>
+
+                                <button
+                                    type="button"
+                                    data-counter-action="red-increase"
+                                    aria-label="Adicionar RED"
+                                >+</button>
+                            </div>
+                        </article>
+
+                    </div>
+
+                    <p class="counter-note">
+                        Os registros são independentes para cada jogo e ficam salvos neste navegador.
+                        Limpar os dados do navegador pode apagá-los.
+                    </p>
+
+                </section>
+
+                <!-- RODAPÉ -->
+                <footer class="dashboard-footer"> 
 
                 <!-- RODAPÉ -->
                 <footer class="dashboard-footer">
