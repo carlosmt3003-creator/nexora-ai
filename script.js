@@ -42,7 +42,7 @@ const SESSIONS = [
         id: "morning",
         name: "Manhã",
         start: "07:00",
-        end: "14:30"
+        end: "09:30"
     },
     {
         id: "afternoon",
@@ -54,7 +54,7 @@ const SESSIONS = [
         id: "night",
         name: "Noite",
         start: "23:00",
-        end: "01:30"
+        end: "23:30"
     }
 ];
 
@@ -2053,3 +2053,262 @@ async function testarBrowserTrial() {
 }
 
 testarBrowserTrial();
+
+
+/* =========================================================
+   NEXORA AI — CONTADOR GREEN / RED
+   Persistência local por jogo
+   Registro manual, sem integração com a análise
+========================================================= */
+
+(() => {
+    "use strict";
+
+    const STORAGE_KEY = "nexora_green_red_v1";
+
+    const GAME_IDS = [
+        "mega-sic-bac",
+        "football-blitz"
+    ];
+
+    const GAME_NAMES = {
+        "mega-sic-bac": "Mega Sic Bac",
+        "football-blitz": "Football Blitz Top Card"
+    };
+
+    function createDefaultData() {
+        return {
+            "mega-sic-bac": {
+                green: 0,
+                red: 0
+            },
+            "football-blitz": {
+                green: 0,
+                red: 0
+            }
+        };
+    }
+
+    function normalizeCount(value) {
+        const number = Number(value);
+
+        if (!Number.isSafeInteger(number) || number < 0) {
+            return 0;
+        }
+
+        return number;
+    }
+
+    function normalizeData(data) {
+        const defaults = createDefaultData();
+
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+            return defaults;
+        }
+
+        for (const gameId of GAME_IDS) {
+            const gameData = data[gameId];
+
+            if (
+                !gameData ||
+                typeof gameData !== "object" ||
+                Array.isArray(gameData)
+            ) {
+                continue;
+            }
+
+            defaults[gameId] = {
+                green: normalizeCount(gameData.green),
+                red: normalizeCount(gameData.red)
+            };
+        }
+
+        return defaults;
+    }
+
+    function loadData() {
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+
+            if (!stored) {
+                return createDefaultData();
+            }
+
+            return normalizeData(JSON.parse(stored));
+        } catch (error) {
+            console.error(
+                "NEXORA AI: não foi possível ler os contadores salvos.",
+                error
+            );
+
+            return createDefaultData();
+        }
+    }
+
+    let counters = loadData();
+
+    function getCurrentGameId() {
+        const selectedCard = document.querySelector(
+            '.game-card.active[data-game]'
+        );
+
+        const selectedId =
+            selectedCard?.dataset.game ||
+            state.selectedGame;
+
+        return GAME_IDS.includes(selectedId)
+            ? selectedId
+            : "mega-sic-bac";
+    }
+
+    function saveData() {
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(counters)
+            );
+
+            return true;
+        } catch (error) {
+            console.error(
+                "NEXORA AI: não foi possível salvar os contadores.",
+                error
+            );
+
+            return false;
+        }
+    }
+
+    function renderCounters() {
+        const gameId = getCurrentGameId();
+        const gameData = counters[gameId];
+
+        const greenElement = document.getElementById("greenCount");
+        const redElement = document.getElementById("redCount");
+        const gameNameElement = document.getElementById("counterGameName");
+
+        if (greenElement) {
+            greenElement.textContent = String(gameData.green);
+        }
+
+        if (redElement) {
+            redElement.textContent = String(gameData.red);
+        }
+
+        if (gameNameElement) {
+            gameNameElement.textContent = GAME_NAMES[gameId];
+        }
+
+        const counter = document.getElementById("resultsCounter");
+
+        if (counter) {
+            counter.dataset.currentGame = gameId;
+        }
+    }
+
+    function changeCounter(type, operation) {
+        const gameId = getCurrentGameId();
+        const previousValue = counters[gameId][type];
+
+        let nextValue = previousValue;
+
+        if (operation === "increase") {
+            if (previousValue >= Number.MAX_SAFE_INTEGER) {
+                return;
+            }
+
+            nextValue = previousValue + 1;
+        }
+
+        if (operation === "decrease") {
+            nextValue = Math.max(0, previousValue - 1);
+        }
+
+        if (nextValue === previousValue) {
+            renderCounters();
+            return;
+        }
+
+        counters[gameId][type] = nextValue;
+
+        if (!saveData()) {
+            counters[gameId][type] = previousValue;
+
+            renderCounters();
+
+            return;
+        }
+
+        renderCounters();
+    }
+
+    function initializeCounter() {
+        const counter = document.getElementById("resultsCounter");
+
+        if (!counter) {
+            console.warn(
+                "NEXORA AI: painel GREEN / RED não encontrado no HTML."
+            );
+
+            return;
+        }
+
+        counter.addEventListener("click", (event) => {
+            const button = event.target.closest(
+                "button[data-counter-action]"
+            );
+
+            if (!button || !counter.contains(button)) {
+                return;
+            }
+
+            const action = button.dataset.counterAction;
+
+            switch (action) {
+                case "green-increase":
+                    changeCounter("green", "increase");
+                    break;
+
+                case "green-decrease":
+                    changeCounter("green", "decrease");
+                    break;
+
+                case "red-increase":
+                    /*
+                     * Registre RED somente depois de confirmar
+                     * manualmente que ocorreu 1 gale.
+                     */
+                    changeCounter("red", "increase");
+                    break;
+
+                case "red-decrease":
+                    changeCounter("red", "decrease");
+                    break;
+            }
+        });
+
+        /*
+         * Atualiza os números quando o usuário troca de jogo.
+         * Os valores de cada jogo permanecem independentes.
+         */
+        document.querySelectorAll(".game-card[data-game]").forEach(
+            (button) => {
+                button.addEventListener("click", () => {
+                    window.requestAnimationFrame(renderCounters);
+                });
+            }
+        );
+
+        renderCounters();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeCounter,
+            { once: true }
+        );
+    } else {
+        initializeCounter();
+    }
+})();
