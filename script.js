@@ -5,17 +5,7 @@
    NEXORA AI — CONTROLE PRINCIPAL
    Versão corrigida
 
-   - Estratégias separadas por jogo
-   - Análise demonstrativa de 15 segundos
-   - Intervalo de 24 segundos entre análises
-   - Horários no fuso de Brasília
-   - Login demonstrativo
-   - Iframe com indicador visual de carregamento
-   - Histórico preparado para integração futura
 
-   IMPORTANTE:
-   A seleção de estratégia é aleatória.
-   Não representa uma previsão baseada em dados reais.
 ========================================================= */
 
 
@@ -41,13 +31,13 @@ const SESSIONS = [
     {
         id: "morning",
         name: "Manhã",
-        start: "07:00",
+        start: "09:00",
         end: "09:30"
     },
     {
         id: "afternoon",
         name: "Tarde",
-        start: "13:30",
+        start: "17:30",
         end: "18:00"
     },
     {
