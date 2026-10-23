@@ -3170,3 +3170,323 @@ svg {
         transition: none;
     }
 }
+
+/* =========================================================
+   NEXORA AI — CORREÇÃO DO CONTADOR GREEN / RED
+   Evita cortes, sobreposição e overflow horizontal
+========================================================= */
+
+
+/* =========================================================
+   NEXORA AI — CONTADOR GREEN / RED
+   Tamanho compacto em telas grandes e celulares
+========================================================= */
+
+.results-counter {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 14px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.results-counter *,
+.results-counter *::before,
+.results-counter *::after {
+    box-sizing: border-box;
+}
+
+.counter-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+}
+
+.counter-header > div {
+    flex: 1 1 180px;
+    min-width: 0;
+}
+
+.counter-header h3,
+.counter-header p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.counter-storage {
+    flex-shrink: 0;
+    max-width: 100%;
+}
+
+.counter-game-name {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 12px 0 10px;
+    overflow-wrap: anywhere;
+}
+
+.counter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.counter-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 12px;
+    overflow: hidden;
+}
+
+.counter-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+
+.counter-number {
+    display: block;
+    max-width: 100%;
+    margin: 10px 0 12px;
+    font-size: 2rem;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.counter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 100%;
+}
+
+.counter-actions button {
+    flex: 0 0 38px;
+    width: 38px;
+    min-width: 38px;
+    height: 38px;
+}
+
+.counter-note {
+    max-width: 100%;
+    margin-top: 10px;
+    overflow-wrap: anywhere;
+}
+
+/* Telas médias */
+@media (max-width: 900px) {
+    .results-counter {
+        padding: 12px;
+    }
+
+    .counter-card {
+        padding: 12px;
+    }
+
+    .counter-number {
+        font-size: 1.9rem;
+    }
+}
+
+/* Celulares */
+@media (max-width: 560px) {
+    .results-counter {
+        padding: 12px;
+    }
+
+    .counter-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .counter-header > div {
+        flex-basis: auto;
+    }
+
+    .counter-storage {
+        align-self: flex-start;
+    }
+
+    .counter-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .counter-card {
+        padding: 14px;
+    }
+
+    .counter-number {
+        font-size: 2.25rem;
+    }
+
+    .counter-actions button {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+    }
+}
+/* CORREÇÃO DO LAYOUT GREEN / RED */
+
+.workspace-grid > #resultsCounter {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+#resultsCounter,
+#resultsCounter * {
+    box-sizing: border-box;
+}
+
+#resultsCounter .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+#resultsCounter .counter-card {
+    min-width: 0;
+}
+
+@media (max-width: 560px) {
+    #resultsCounter {
+        padding: 12px;
+    }
+
+    #resultsCounter .counter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    #resultsCounter .counter-header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+/* NEXORA AI — BLOQUEIO DE SEGURANÇA */
+
+.welcome-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.safety-lock-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 90, 90, 0.4);
+    border-radius: 10px;
+    background: rgba(150, 30, 40, 0.12);
+    color: #ff7777;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.safety-lock-button:hover:not(:disabled) {
+    background: rgba(150, 30, 40, 0.24);
+    border-color: #ff7777;
+}
+
+.safety-lock-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.85;
+}
+
+.safety-lock-overlay[hidden] {
+    display: none !important;
+}
+
+.safety-lock-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow: auto;
+    background: #080b09;
+    color: #f2f5f3;
+    text-align: center;
+}
+
+.safety-lock-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.safety-lock-icon {
+    font-size: 36px;
+}
+
+.safety-lock-content h3 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.safety-lock-content p {
+    margin: 0;
+    color: #aab4ad;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.safety-lock-content strong {
+    color: #ff7777;
+    font-size: clamp(30px, 6vw, 42px);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 2px;
+}
+
+.safety-lock-content > span:last-of-type {
+    color: #8b978f;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 600px) {
+    .welcome-actions {
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .safety-lock-button {
+        width: 100%;
+    }
+}
