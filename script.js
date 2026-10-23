@@ -5,7 +5,17 @@
    NEXORA AI — CONTROLE PRINCIPAL
    Versão corrigida
 
+   - Estratégias separadas por jogo
+   - Análise demonstrativa de 15 segundos
+   - Intervalo de 24 segundos entre análises
+   - Horários no fuso de Brasília
+   - Login demonstrativo
+   - Iframe com indicador visual de carregamento
+   - Histórico preparado para integração futura
 
+   IMPORTANTE:
+   A seleção de estratégia é aleatória.
+   Não representa uma previsão baseada em dados reais.
 ========================================================= */
 
 
@@ -32,7 +42,7 @@ const SESSIONS = [
         id: "morning",
         name: "Manhã",
         start: "07:00",
-        end: "10:30"
+        end: "09:30"
     },
     {
         id: "afternoon",
@@ -44,7 +54,7 @@ const SESSIONS = [
         id: "night",
         name: "Noite",
         start: "23:00",
-        end: "00:00"
+        end: "23:30"
     }
 ];
 
@@ -56,7 +66,7 @@ const MEGA_SIC_BAC_STRATEGIES = [
     "Jogador ou empate",
     "Jogador",
     "Banca",
-    "Duplos de 4-5-6"
+    "Duplos de 3-5-6"
 ];
 
 
@@ -162,11 +172,14 @@ const elements = {
 /* 7. ESTADO DA APLICAÇÃO */
 
 const state = {
+
+    emotionalLockActive:
+    localStorage.getItem("nexora_emotional_lock") === "true",
     selectedGame: CONFIG.GAMES.MEGA_SIC_BAC,
 
     isAuthenticated: false,
     isAnalyzing: false,
-
+    
     analysisStartedAt: null,
     analysisEndsAt: null,
     cooldownEndsAt: 0,
@@ -1056,7 +1069,17 @@ function updateSessionStatus() {
 
 function updateAnalysisButton() {
     if (!elements.analyzeButton) return;
+        if (state.emotionalLockActive) {
+        elements.analyzeButton.disabled = true;
 
+        const text = elements.analyzeButton.querySelector("span");
+
+        if (text) {
+            text.textContent = "BLOQUEIO DE SEGURANÇA";
+        }
+
+        return;
+    }
     const remaining = getRemainingSeconds(state.cooldownEndsAt);
     const session = getCurrentSession();
 
@@ -1490,6 +1513,10 @@ function initializeAnalysis() {
 
 
 function startAnalysis() {
+        if (state.emotionalLockActive) {
+        setAnalysisStatus("Bloqueio de segurança ativo", false);
+        return;
+    }
     if (state.isAnalyzing) return;
 
     if (!state.isAuthenticated) {
@@ -1930,11 +1957,271 @@ function setGameHistory(gameId, records, sourceName) {
         }
     }
 }
+/* =========================================================
+   NEXORA AI — BLOQUEIO DE CONTROLE EMOCIONAL
+   Bloqueia o iframe e as ações do próprio site
+========================================================= */
+
+
+function initializeEmotionalLock() {
+    const lockButton = document.getElementById("safetyLockButton");
+    const lockButtonText = document.getElementById("safetyLockButtonText");
+    const frameWrap = elements.gameFrameWrap;
+
+    if (!lockButton || !frameWrap) {
+        console.warn("NEXORA AI: elementos do bloqueio não encontrados.");
+        return;
+    }
+
+    const LOCK_KEY = "nexora_emotional_lock";
+    const UNTIL_KEY = "nexora_emotional_lock_until";
+
+    let overlay = document.getElementById("emotionalLockOverlay");
+    let lockTimer = null;
+    let lockUntil = Number(localStorage.getItem(UNTIL_KEY)) || 0;
+
+    // Horários das sessões no fuso de Brasília.
+    const sessionStarts = ["09:00", "17:30", "23:00"];
+
+    function getBrasiliaTime() {
+        const parts = new Intl.DateTimeFormat("en-GB", {
+            timeZone: "America/Sao_Paulo",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false
+        }).formatToParts(new Date());
+
+        const value = (type) =>
+            Number(parts.find((part) => part.type === type).value);
+
+        return value("hour") * 3600 +
+            value("minute") * 60 +
+            value("second");
+    }
+
+    function getNextSessionStartTimestamp() {
+        const nowSeconds = getBrasiliaTime();
+
+        const starts = sessionStarts.map((time) => {
+            const [hour, minute] = time.split(":").map(Number);
+            return hour * 3600 + minute * 60;
+        });
+
+        const nextStart = starts.find((start) => start > nowSeconds);
+        const secondsUntil = nextStart !== undefined
+            ? nextStart - nowSeconds
+            : 86400 - nowSeconds + starts[0];
+
+        return Date.now() + secondsUntil * 1000;
+    }
+
+    // Cria a camada que cobre o jogo.
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "emotionalLockOverlay";
+        overlay.setAttribute("role", "alert");
+        overlay.setAttribute("aria-live", "assertive");
+
+        overlay.innerHTML = `
+            <div style="
+                max-width:340px;
+                padding:24px;
+                border:1px solid #713333;
+                border-radius:14px;
+                background:#111512;
+            ">
+                <div style="font-size:32px">🔒</div>
+                <h3 style="color:#ff6666">PAUSA ATIVADA</h3>
+                <p style="line-height:1.6">
+                    O jogo está bloqueado pelo seu controle emocional.
+                </p>
+                <p style="color:#b8c0ba;font-size:13px;line-height:1.6">
+                    Afaste-se da tela e evite decisões impulsivas.
+                </p>
+                <p style="color:#ff8888">
+                    Liberação automática em:
+                    <strong id="emotionalLockCountdown">--:--:--</strong>
+                </p>
+            </div>
+        `;
+
+        Object.assign(overlay.style, {
+            position: "absolute",
+            inset: "0",
+            zIndex: "99999",
+            display: "none",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+            background: "rgba(5, 8, 6, 0.97)",
+            color: "#ffffff",
+            textAlign: "center",
+            boxSizing: "border-box"
+        });
+
+        frameWrap.style.position = "relative";
+        frameWrap.appendChild(overlay);
+    }
+
+    function stopAnalysisSafely() {
+        if (state.isAnalyzing && typeof stopAnalysis === "function") {
+            stopAnalysis();
+        }
+    }
+
+    function applyLock() {
+        const locked = state.emotionalLockActive;
+
+        try {
+            localStorage.setItem(LOCK_KEY, String(locked));
+
+            if (locked) {
+                localStorage.setItem(UNTIL_KEY, String(lockUntil));
+            } else {
+                localStorage.removeItem(UNTIL_KEY);
+            }
+        } catch (error) {
+            console.error("Erro ao salvar o bloqueio:", error);
+        }
+
+        overlay.style.display = locked ? "flex" : "none";
+
+        if (elements.gameFrame) {
+            elements.gameFrame.style.pointerEvents = locked ? "none" : "";
+            elements.gameFrame.setAttribute("aria-disabled", String(locked));
+        }
+
+        [
+            elements.gameUrl,
+            elements.openUrlButton,
+            elements.reloadFrameButton,
+            elements.openExternalButton
+        ].forEach((element) => {
+            if (element) element.disabled = locked;
+        });
+
+        if (elements.gameCards) {
+            elements.gameCards.forEach((card) => {
+                card.disabled = locked;
+            });
+        }
+
+        lockButton.setAttribute("aria-pressed", String(locked));
+        lockButton.disabled = locked;
+        lockButton.classList.toggle("is-locked", locked);
+
+        if (lockButtonText) {
+            lockButtonText.textContent = locked
+                ? "BLOQUEIO ATIVO"
+                : "ATIVAR BLOQUEIO DE SEGURANÇA";
+        }
+
+        stopAnalysisSafely();
+
+        if (typeof updateAnalysisButton === "function") {
+            updateAnalysisButton();
+        }
+    }
+
+    function checkLockExpiry() {
+        if (!state.emotionalLockActive) return;
+
+        const countdown = overlay.querySelector("#emotionalLockCountdown");
+        const remaining = lockUntil - Date.now();
+
+        if (countdown) {
+            if (remaining > 0) {
+                const totalSeconds = Math.ceil(remaining / 1000);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                countdown.textContent = [
+                    String(hours).padStart(2, "0"),
+                    String(minutes).padStart(2, "0"),
+                    String(seconds).padStart(2, "0")
+                ].join(":");
+            } else {
+                countdown.textContent = "Liberando...";
+            }
+        }
+
+        if (remaining <= 0) {
+            state.emotionalLockActive = false;
+            lockUntil = 0;
+
+            if (lockTimer) {
+                clearInterval(lockTimer);
+                lockTimer = null;
+            }
+
+            applyLock();
+
+            if (typeof setMessage === "function" && elements.urlMessage) {
+                setMessage(
+                    elements.urlMessage,
+                    "Bloqueio encerrado automaticamente no início da próxima sessão.",
+                    "info"
+                );
+            }
+        }
+    }
+
+    // Recupera o bloqueio salvo, inclusive após recarregar a página.
+    if (localStorage.getItem(LOCK_KEY) === "true") {
+        state.emotionalLockActive = true;
+
+        if (!lockUntil || lockUntil <= Date.now()) {
+            lockUntil = getNextSessionStartTimestamp();
+        }
+    } else {
+        state.emotionalLockActive = false;
+        lockUntil = 0;
+    }
+
+    // Só permite ativar; nunca permite desbloquear manualmente.
+    lockButton.addEventListener("click", () => {
+        if (state.emotionalLockActive) return;
+
+        const confirmed = window.confirm(
+            "Ativar o bloqueio de controle emocional? " +
+            "O jogo e as análises ficarão bloqueados até a próxima sessão."
+        );
+
+        if (!confirmed) return;
+
+        lockUntil = getNextSessionStartTimestamp();
+        state.emotionalLockActive = true;
+
+        applyLock();
+        checkLockExpiry();
+
+        if (lockTimer) clearInterval(lockTimer);
+
+        lockTimer = window.setInterval(checkLockExpiry, 1000);
+    });
+
+    applyLock();
+
+    if (state.emotionalLockActive) {
+        checkLockExpiry();
+
+        if (state.emotionalLockActive) {
+            lockTimer = window.setInterval(checkLockExpiry, 1000);
+        }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) checkLockExpiry();
+    });
+}
 
 
 /* 19. INICIALIZAÇÃO */
 
 function initializeApplication() {
+    
     initializeIntro();
     initializeLogin();
     initializeRegistration();
@@ -1943,7 +2230,7 @@ function initializeApplication() {
     initializeSessionClock();
     initializeFrame();
     initializeAnalysis();
-
+    initializeEmotionalLock();
     updateSelectedGame();
     updateHistoryView();
     updateAnalysisButton();
