@@ -53,7 +53,7 @@ const SESSIONS = [
     {
         id: "night",
         name: "Noite",
-        start: "22:00",
+        start: "23:00",
         end: "00:00"
     }
 ];
