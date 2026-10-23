@@ -54,7 +54,7 @@ const SESSIONS = [
         id: "night",
         name: "Noite",
         start: "22:00",
-        end: "03:30"
+        end: "00:00"
     }
 ];
 
@@ -66,8 +66,7 @@ const MEGA_SIC_BAC_STRATEGIES = [
     "Jogador ou empate",
     "Jogador",
     "Banca",
-    "Duplos de 4-5-6",
-    "Duplos de 1-2-3"
+    "Duplos de 4-5-6"
 ];
 
 
