@@ -6,935 +6,377 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#070908">
     <meta name="description" content="NEXORA AI — Plataforma de análise de jogos.">
-
     <title>NEXORA AI | Game Intelligence</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-  <link rel="shortcut icon" href="icons8-dinheiro-16.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="icons8-dinheiro-16.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js" defer></script>
     <script src="script.js" defer></script>
 </head>
-
 <body>
-
     <!-- INTRODUÇÃO -->
     <section class="intro-screen" id="introScreen" aria-label="Introdução">
         <div class="intro-grid"></div>
-
         <div class="intro-content">
-            <div class="brand-symbol intro-symbol">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <h1 class="intro-logo">
-                NEXORA <span>AI</span>
-            </h1>
-
+            <div class="brand-symbol intro-symbol"><span></span><span></span><span></span></div>
+            <h1 class="intro-logo">NEXORA <span>AI</span></h1>
             <p class="intro-subtitle">GAME INTELLIGENCE PLATFORM</p>
-
-            <div class="intro-loader">
-                <span></span>
-            </div>
-
+            <div class="intro-loader"><span></span></div>
             <p class="intro-status">INICIALIZANDO INTERFACE</p>
         </div>
     </section>
 
     <!-- AUTENTICAÇÃO -->
     <main class="auth-screen" id="authScreen">
-
-        <!-- APRESENTAÇÃO -->
         <section class="auth-visual">
             <div class="visual-grid"></div>
             <div class="visual-orb orb-one"></div>
             <div class="visual-orb orb-two"></div>
-
             <header class="brand">
-                <div class="brand-symbol">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <a href="#" class="brand-name">
-                    NEXORA <span>AI</span>
-                </a>
+                <div class="brand-symbol"><span></span><span></span><span></span></div>
+                <a href="#" class="brand-name">NEXORA <span>AI</span></a>
             </header>
-
             <div class="visual-content">
-                <div class="eyebrow">
-                    <span class="status-dot"></span>
-                    INTELLIGENCE SYSTEM
-                </div>
-
-                <h1>
-                    Análise inteligente.<br>
-                    <span>Mais informação.</span>
-                </h1>
-
-                <p class="visual-description">
-                    Um ambiente organizado para visualizar jogos,
-                    acompanhar dados disponíveis e centralizar suas análises.
-                </p>
-
+                <div class="eyebrow"><span class="status-dot"></span> INTELLIGENCE SYSTEM</div>
+                <h1>Análise inteligente.<br><span>Mais informação.</span></h1>
+                <p class="visual-description">Um ambiente organizado para visualizar jogos, acompanhar dados disponíveis e centralizar suas análises.</p>
                 <div class="visual-graphic">
                     <div class="graphic-ring ring-one"></div>
                     <div class="graphic-ring ring-two"></div>
                     <div class="graphic-ring ring-three"></div>
-
                     <div class="graphic-center">
-                        <div class="brand-symbol large-symbol">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
+                        <div class="brand-symbol large-symbol"><span></span><span></span><span></span></div>
                     </div>
-
                     <span class="graphic-point point-one"></span>
                     <span class="graphic-point point-two"></span>
                     <span class="graphic-point point-three"></span>
                 </div>
             </div>
-
             <footer class="visual-footer">
-                <span>PRECISÃO VISUAL</span>
-                <span class="footer-divider"></span>
-                <span>TECNOLOGIA E CONTROLE</span>
+                <span>PRECISÃO VISUAL</span><span class="footer-divider"></span><span>TECNOLOGIA E CONTROLE</span>
             </footer>
         </section>
 
-        <!-- FORMULÁRIOS -->
         <section class="auth-form-side">
-
             <div class="auth-mobile-brand brand">
-                <div class="brand-symbol">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <a href="#" class="brand-name">
-                    NEXORA <span>AI</span>
-                </a>
+                <div class="brand-symbol"><span></span><span></span><span></span></div>
+                <a href="#" class="brand-name">NEXORA <span>AI</span></a>
             </div>
-
             <div class="auth-card">
-
                 <!-- LOGIN -->
                 <section id="loginSection">
-
                     <div class="form-heading">
                         <span class="section-label">ACESSO À PLATAFORMA</span>
                         <h2>Bem-vindo de volta</h2>
                         <p>Entre na sua conta para continuar.</p>
                     </div>
-
                     <form id="loginForm">
-
                         <div class="field-group">
                             <label for="email">E-mail</label>
-
                             <div class="input-wrap">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="3" y="5" width="18" height="14" rx="3"></rect>
-                                    <path d="m4 7 8 6 8-6"></path>
-                                </svg>
-
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="voce@exemplo.com"
-                                    autocomplete="username"
-                                    required
-                                >
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="m4 7 8 6 8-6"></path></svg>
+                                <input type="email" id="email" name="email" placeholder="voce@exemplo.com" autocomplete="username" required>
                             </div>
                         </div>
-
                         <div class="field-group">
-
                             <div class="field-label-row">
                                 <label for="password">Senha</label>
-
-                                <button
-                                    type="button"
-                                    class="text-button"
-                                    id="forgotPassword"
-                                >
-                                    Esqueci minha senha
-                                </button>
+                                <button type="button" class="text-button" id="forgotPassword">Esqueci minha senha</button>
                             </div>
-
                             <div class="input-wrap">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="4" y="10" width="16" height="11" rx="3"></rect>
-                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-                                </svg>
-
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Digite sua senha"
-                                    autocomplete="current-password"
-                                    required
-                                >
-
-                                <button
-                                    type="button"
-                                    class="password-toggle"
-                                    id="togglePassword"
-                                    aria-label="Mostrar senha"
-                                >
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+                                <input type="password" id="password" name="password" placeholder="Digite sua senha" autocomplete="current-password" required>
+                                <button type="button" class="password-toggle" id="togglePassword" aria-label="Mostrar senha">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 </button>
                             </div>
                         </div>
-
-                        <p
-                            class="form-message"
-                            id="loginMessage"
-                            role="status"
-                            aria-live="polite"
-                        ></p>
-
-                        <button
-                            type="submit"
-                            class="primary-button"
-                            id="loginButton"
-                        >
+                        <p class="form-message" id="loginMessage" role="status" aria-live="polite"></p>
+                        <button type="submit" class="primary-button" id="loginButton">
                             <span>Entrar na plataforma</span>
-
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M5 12h14M13 6l6 6-6 6"></path>
-                            </svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
                         </button>
-
                     </form>
-
-                    <div class="auth-divider">
-                        <span></span>
-                        <p>OU</p>
-                        <span></span>
-                    </div>
-
+                    <div class="auth-divider"><span></span><p>OU</p><span></span></div>
                     <div class="register-access">
                         <p>Ainda não tem uma conta?</p>
-
-                        <button
-                            type="button"
-                            class="primary-button"
-                            id="showRegisterButton"
-                        >
+                        <button type="button" class="primary-button" id="showRegisterButton">
                             <span>Criar conta gratuita</span>
-
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M12 5v14M5 12h14"></path>
-                            </svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
                         </button>
                     </div>
-
                 </section>
 
                 <!-- CADASTRO -->
                 <section id="registerSection" class="hidden" aria-labelledby="registerTitle">
-
                     <div class="form-heading">
                         <span class="section-label">NOVO ACESSO</span>
                         <h2 id="registerTitle">Criar sua conta</h2>
                         <p>Cadastre-se para iniciar seu acesso à Nexora AI.</p>
                     </div>
-
                     <form id="registerForm">
-
                         <div class="field-group">
                             <label for="registerEmail">E-mail</label>
-
                             <div class="input-wrap">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="3" y="5" width="18" height="14" rx="3"></rect>
-                                    <path d="m4 7 8 6 8-6"></path>
-                                </svg>
-
-                                <input
-                                    type="email"
-                                    id="registerEmail"
-                                    name="registerEmail"
-                                    placeholder="voce@exemplo.com"
-                                    autocomplete="email"
-                                    required
-                                >
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"></rect><path d="m4 7 8 6 8-6"></path></svg>
+                                <input type="email" id="registerEmail" name="registerEmail" placeholder="voce@exemplo.com" autocomplete="email" required>
                             </div>
                         </div>
-
                         <div class="field-group">
                             <label for="registerPassword">Criar senha</label>
-
                             <div class="input-wrap">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="4" y="10" width="16" height="11" rx="3"></rect>
-                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-                                </svg>
-
-                                <input
-                                    type="password"
-                                    id="registerPassword"
-                                    name="registerPassword"
-                                    placeholder="Mínimo de 8 caracteres"
-                                    autocomplete="new-password"
-                                    minlength="8"
-                                    required
-                                >
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+                                <input type="password" id="registerPassword" name="registerPassword" placeholder="Mínimo de 8 caracteres" autocomplete="new-password" minlength="8" required>
                             </div>
                         </div>
-
                         <div class="field-group">
                             <label for="confirmPassword">Confirmar senha</label>
-
                             <div class="input-wrap">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="4" y="10" width="16" height="11" rx="3"></rect>
-                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-                                </svg>
-
-                                <input
-                                    type="password"
-                                    id="confirmPassword"
-                                    name="confirmPassword"
-                                    placeholder="Digite a senha novamente"
-                                    autocomplete="new-password"
-                                    minlength="8"
-                                    required
-                                >
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Digite a senha novamente" autocomplete="new-password" minlength="8" required>
                             </div>
                         </div>
-
-                        <p
-                            class="form-message"
-                            id="registerMessage"
-                            role="status"
-                            aria-live="polite"
-                        ></p>
-
-                        <button
-                            type="submit"
-                            class="primary-button"
-                            id="registerButton"
-                        >
+                        <p class="form-message" id="registerMessage" role="status" aria-live="polite"></p>
+                        <button type="submit" class="primary-button" id="registerButton">
                             <span>Criar conta</span>
-
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M5 12h14M13 6l6 6-6 6"></path>
-                            </svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
                         </button>
-
                     </form>
-
-                    <div class="auth-divider">
-                        <span></span>
-                        <p>JÁ TEM UMA CONTA?</p>
-                        <span></span>
-                    </div>
-
-                    <button
-                        type="button"
-                        class="text-button"
-                        id="showLoginButton"
-                    >
-                        Voltar para o login
-                    </button>
-
-                    <p class="auth-legal">
-                        Seus dados devem ser tratados com segurança.
-                    </p>
-
+                    <div class="auth-divider"><span></span><p>JÁ TEM UMA CONTA?</p><span></span></div>
+                    <button type="button" class="text-button" id="showLoginButton">Voltar para o login</button>
+                    <p class="auth-legal">Seus dados devem ser tratados com segurança.</p>
                 </section>
-
                 <div class="security-note">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 3 20 6v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-3Z"></path>
-                        <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-3Z"></path><path d="m9 12 2 2 4-4"></path></svg>
                     <p>Área de acesso da NEXORA AI</p>
                 </div>
-
-                <p class="auth-legal">
-                    Acesso sujeito à verificação de autenticação e validade do teste.
-                </p>
-
+                <p class="auth-legal">Acesso sujeito à verificação de autenticação e validade do teste.</p>
             </div>
-
-            <footer class="auth-footer">
-                <span>© 2026 NEXORA AI</span>
-                <span>INTERFACE V1.0</span>
-            </footer>
-
+            <footer class="auth-footer"><span>© 2026 NEXORA AI</span><span>INTERFACE V1.0</span></footer>
         </section>
     </main>
 
     <!-- PAINEL PRINCIPAL -->
     <main class="app-screen hidden" id="appScreen">
-
         <!-- MENU LATERAL -->
         <aside class="sidebar" id="sidebar">
-
             <a href="#" class="brand sidebar-brand">
-                <div class="brand-symbol">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <span class="brand-name">
-                    NEXORA <span>AI</span>
-                </span>
+                <div class="brand-symbol"><span></span><span></span><span></span></div>
+                <span class="brand-name">NEXORA <span>AI</span></span>
             </a>
-
             <div class="sidebar-section-label">MENU PRINCIPAL</div>
-
             <nav class="sidebar-nav" aria-label="Navegação principal">
-
-                <button
-                    class="nav-item active"
-                    data-view="dashboard"
-                    type="button"
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="3" y="3" width="8" height="8" rx="2"></rect>
-                        <rect x="13" y="3" width="8" height="5" rx="2"></rect>
-                        <rect x="13" y="10" width="8" height="11" rx="2"></rect>
-                        <rect x="3" y="13" width="8" height="8" rx="2"></rect>
-                    </svg>
-
+                <button class="nav-item active" data-view="dashboard" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2"></rect><rect x="13" y="3" width="8" height="5" rx="2"></rect><rect x="13" y="10" width="8" height="11" rx="2"></rect><rect x="3" y="13" width="8" height="8" rx="2"></rect></svg>
                     <span>Painel</span>
                 </button>
-
-                <button
-                    class="nav-item"
-                    data-view="analysis"
-                    type="button"
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="11" cy="11" r="7"></circle>
-                        <path d="m16 16 5 5M11 7v8M7 11h8"></path>
-                    </svg>
-
+                <button class="nav-item" data-view="analysis" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5M11 7v8M7 11h8"></path></svg>
                     <span>Central de análise</span>
                 </button>
-
             </nav>
-
             <div class="sidebar-bottom">
-
                 <div class="sidebar-status">
                     <span class="status-dot"></span>
-
-                    <div>
-                        <strong>Interface ativa</strong>
-                        <small>Aguardando conexão de dados</small>
-                    </div>
+                    <div><strong>Interface ativa</strong><small>Aguardando conexão de dados</small></div>
                 </div>
-
-                <button
-                    type="button"
-                    class="nav-item logout-button"
-                    id="logoutButton"
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M10 17l5-5-5-5M15 12H3"></path>
-                        <path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"></path>
-                    </svg>
-
+                <button type="button" class="nav-item logout-button" id="logoutButton">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-6"></path></svg>
                     <span>Sair da conta</span>
                 </button>
-
             </div>
         </aside>
 
         <!-- ÁREA PRINCIPAL -->
         <section class="app-main">
-
             <header class="topbar">
-
-                <button
-                    type="button"
-                    class="mobile-menu-button"
-                    id="mobileMenuButton"
-                    aria-label="Abrir menu"
-                    aria-expanded="false"
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M4 7h16M4 12h16M4 17h16"></path>
-                    </svg>
+                <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Abrir menu" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
                 </button>
-
-                <div class="topbar-title">
-                    <span class="section-label">WORKSPACE</span>
-                    <h2>Painel de análise</h2>
-                </div>
-
+                <div class="topbar-title"><span class="section-label">WORKSPACE</span><h2>Painel de análise</h2></div>
                 <div class="topbar-right">
-
-                    <div class="connection-status">
-                        <span class="status-dot"></span>
-                        <span>Interface ativa</span>
-                    </div>
-
+                    <div class="connection-status"><span class="status-dot"></span><span>Interface ativa</span></div>
                     <div class="user-avatar" aria-label="Usuário">N</div>
-
                 </div>
             </header>
 
             <div class="dashboard-content">
-
                 <!-- BOAS-VINDAS -->
                 <section class="welcome-row">
                     <div>
                         <span class="section-label">CENTRAL DE CONTROLE</span>
-
                         <h1>Seu espaço de <span>análise.</span></h1>
-
-                        <p>
-                            Selecione um jogo e configure a área de visualização.
-                        </p>
+                        <p>Selecione um jogo e configure a área de visualização.</p>
                     </div>
+                   <div class="welcome-actions">
+    <div class="system-chip">
+        <span class="status-dot"></span>
+        SISTEMA INICIALIZADO
+    </div>
 
-                    <div class="system-chip">
-                        <span class="status-dot"></span>
-                        SISTEMA INICIALIZADO
-                    </div>
+    <button type="button" id="safetyLockButton"
+            class="safety-lock-button">
+        <span aria-hidden="true">🔒</span>
+        <span id="safetyLockButtonText">BLOQUEIO DE SEGURANÇA</span>
+    </button>
+</div>
                 </section>
 
                 <!-- SELETOR DE JOGOS -->
                 <section class="game-section">
-
                     <div class="section-heading">
-                        <div>
-                            <h3>Jogos disponíveis</h3>
-                            <p>Selecione o jogo que deseja analisar.</p>
-                        </div>
-
+                        <div><h3>Jogos disponíveis</h3><p>Selecione o jogo que deseja analisar.</p></div>
                         <span class="subtle-count">02 JOGOS</span>
                     </div>
-
-                    <div
-                        class="game-selector"
-                        role="group"
-                        aria-label="Selecionar jogo"
-                    >
-
-                        <button
-                            type="button"
-                            class="game-card active"
-                            data-game="mega-sic-bac"
-                            aria-pressed="true"
-                        >
+                    <div class="game-selector" role="group" aria-label="Selecionar jogo">
+                        <button type="button" class="game-card active" data-game="mega-sic-bac" aria-pressed="true">
                             <div class="game-icon dice-icon">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-                                    <circle cx="8" cy="8" r="1"></circle>
-                                    <circle cx="16" cy="8" r="1"></circle>
-                                    <circle cx="12" cy="12" r="1"></circle>
-                                    <circle cx="8" cy="16" r="1"></circle>
-                                    <circle cx="16" cy="16" r="1"></circle>
-                                </svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="8" cy="8" r="1"></circle><circle cx="16" cy="8" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="8" cy="16" r="1"></circle><circle cx="16" cy="16" r="1"></circle></svg>
                             </div>
-
-                            <div class="game-info">
-                                <span class="game-category">DADOS</span>
-                                <h4>Mega Sic Bac</h4>
-                                <p>Área de jogo e análise</p>
-                            </div>
-
+                            <div class="game-info"><span class="game-category">DADOS</span><h4>Mega Sic Bac</h4><p>Área de jogo e análise</p></div>
                             <span class="game-indicator"></span>
                         </button>
-
-                        <button
-                            type="button"
-                            class="game-card"
-                            data-game="football-blitz"
-                            aria-pressed="false"
-                        >
+                        <button type="button" class="game-card" data-game="football-blitz" aria-pressed="false">
                             <div class="game-icon football-icon">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="9"></circle>
-                                    <path d="m12 7 4 3-1.5 5h-5L8 10l4-3Z"></path>
-                                    <path d="m8 10-4-1M9.5 15 7 19M14.5 15l2.5 4M16 10l4-1M12 7V3"></path>
-                                </svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m12 7 4 3-1.5 5h-5L8 10l4-3Z"></path><path d="m8 10-4-1M9.5 15 7 19M14.5 15l2.5 4M16 10l4-1M12 7V3"></path></svg>
                             </div>
-
-                            <div class="game-info">
-                                <span class="game-category">FOOTBALL</span>
-                                <h4>Football Blitz</h4>
-                                <p>Top Card</p>
-                            </div>
-
+                            <div class="game-info"><span class="game-category">FOOTBALL</span><h4>Football Blitz</h4><p>Top Card</p></div>
                             <span class="game-indicator"></span>
                         </button>
-
                     </div>
                 </section>
 
-                <!-- ÁREA DO JOGO E CENTRAL DE ANÁLISE -->
+                <!-- ÁREA DO JOGO, ANÁLISE E CONTADOR -->
                 <section class="workspace-grid" id="dashboardView">
-
                     <!-- PAINEL DA PLATAFORMA -->
                     <div class="panel game-panel">
-
                         <div class="panel-header">
-                            <div>
-                                <span class="section-label">VISUALIZAÇÃO EXTERNA</span>
-                                <h3 id="selectedGameTitle">Mega Sic Bac</h3>
-                            </div>
-
-                            <span class="panel-badge">
-                                <span class="status-dot"></span>
-                                Painel
-                            </span>
+                            <div><span class="section-label">VISUALIZAÇÃO EXTERNA</span><h3 id="selectedGameTitle">Mega Sic Bac</h3></div>
+                            <span class="panel-badge"><span class="status-dot"></span>Painel</span>
                         </div>
 
-                        <!-- CAMPO DE URL -->
                         <form class="url-form" id="urlForm">
-
                             <div class="url-input-wrap">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <circle cx="12" cy="12" r="9"></circle>
-                                    <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0-18"></path>
-                                </svg>
-
-                                <input
-                                    type="url"
-                                    id="gameUrl"
-                                    placeholder="Cole aqui o endereço do jogo"
-                                    autocomplete="url"
-                                    inputmode="url"
-                                    aria-label="Endereço do jogo"
-                                >
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 0 1 0 18"></path></svg>
+                                <input type="url" id="gameUrl" placeholder="Cole aqui o endereço do jogo" autocomplete="url" inputmode="url" aria-label="Endereço do jogo">
                             </div>
-
-                            <button
-                                type="submit"
-                                class="open-url-button"
-                                id="openUrlButton"
-                            >
+                            <button type="submit" class="open-url-button" id="openUrlButton">
                                 <span>Abrir</span>
-
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M14 4h6v6M20 4l-9 9"></path>
-                                    <path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path>
-                                </svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>
                             </button>
-
                         </form>
 
-                        <!-- BARRA DO NAVEGADOR -->
                         <div class="frame-toolbar">
-
-                            <div class="browser-dots" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-
-                            <div class="frame-address" id="frameAddress">
-                                Nenhuma plataforma aberta
-                            </div>
-
-                            <button
-                                type="button"
-                                class="icon-button"
-                                id="reloadFrameButton"
-                                aria-label="Recarregar jogo"
-                                title="Recarregar"
-                            >
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M20 7v5h-5M4 17v-5h5"></path>
-                                    <path d="M5.5 9a7 7 0 0 1 12-2L20 12M4 12l2.5 5a7 7 0 0 0 12-2"></path>
-                                </svg>
+                            <div class="browser-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+                            <div class="frame-address" id="frameAddress">Nenhuma plataforma aberta</div>
+                            <button type="button" class="icon-button" id="reloadFrameButton" aria-label="Recarregar jogo" title="Recarregar">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"></path><path d="M5.5 9a7 7 0 0 1 12-2L20 12M4 12l2.5 5a7 7 0 0 0 12-2"></path></svg>
                             </button>
-
                         </div>
 
-                        <!-- ÁREA DO IFRAME -->
                         <div class="game-frame-wrap" id="gameFrameWrap">
-
                             <div class="frame-placeholder" id="framePlaceholder">
                                 <div class="placeholder-icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <rect x="3" y="4" width="18" height="16" rx="3"></rect>
-                                        <path d="M3 9h18M8 6.5h.01M11 6.5h.01"></path>
-                                        <path d="m10 13 5 3-5 3v-6Z"></path>
-                                    </svg>
+                                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"></rect><path d="M3 9h18M8 6.5h.01M11 6.5h.01"></path><path d="m10 13 5 3-5 3v-6Z"></path></svg>
                                 </div>
-
                                 <h4>Sua plataforma começa aqui</h4>
-
-                                <p>
-                                    Insira o endereço do jogo acima para abrir
-                                    a visualização.
-                                </p>
-
-                                <div class="placeholder-hint">
-                                    <span class="status-dot"></span>
-                                    Aguardando endereço
-                                </div>
+                                <p>Insira o endereço do jogo acima para abrir a visualização.</p>
+                                <div class="placeholder-hint"><span class="status-dot"></span>Aguardando endereço</div>
                             </div>
-
-                            <div class="frame-loading hidden" id="frameLoading">
-                                <div class="loading-spinner"></div>
-                                <p>Carregando plataforma...</p>
-                            </div>
-
-                            <iframe
-                                id="gameFrame"
-                                title="Visualização da plataforma de jogo"
-                                src="about:blank"
-                                loading="lazy"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                allowfullscreen
-                            ></iframe>
-
+                            <div class="frame-loading hidden" id="frameLoading"><div class="loading-spinner"></div><p>Carregando plataforma...</p></div>
+                            <iframe id="gameFrame" title="Visualização da plataforma de jogo" src="about:blank" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
 
-                        <!-- STATUS DO HISTÓRICO -->
-                        <div
-                            id="liveHistoryStatus"
-                            class="live-history-status"
-                            role="status"
-                            aria-live="polite"
-                            hidden
-                        >
-                            <span class="live-history-dot" aria-hidden="true"></span>
-                            <span>PEGANDO HISTÓRICO AO VIVO</span>
+                        <div id="liveHistoryStatus" class="live-history-status" role="status" aria-live="polite" hidden>
+                            <span class="live-history-dot" aria-hidden="true"></span><span>PEGANDO HISTÓRICO AO VIVO</span>
                         </div>
-
-                        <!-- RODAPÉ DO IFRAME -->
                         <div class="frame-footer">
-
-                            <span class="frame-state" id="frameStatus">
-                                <span class="status-dot"></span>
-                                Aguardando conexão
-                            </span>
-
-                            <button
-                                type="button"
-                                class="text-button"
-                                id="openExternalButton"
-                            >
-                                Abrir em nova aba ↗
-                            </button>
-
+                            <span class="frame-state" id="frameStatus"><span class="status-dot"></span>Aguardando conexão</span>
+                            <button type="button" class="text-button" id="openExternalButton">Abrir em nova aba ↗</button>
                         </div>
-
                         <p class="inline-message" id="urlMessage" role="status"></p>
-
                     </div>
 
                     <!-- CENTRAL DE ANÁLISE -->
                     <aside class="panel analysis-panel" id="analysisPanel">
-
                         <div class="panel-header">
-                            <div>
-                                <span class="section-label">NEXORA ENGINE</span>
-                                <h3>Central de Análise</h3>
-                            </div>
-
+                            <div><span class="section-label">NEXORA ENGINE</span><h3>Central de Análise</h3></div>
                             <div class="engine-icon">
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path>
-                                    <circle cx="12" cy="12" r="7"></circle>
-                                    <circle cx="12" cy="12" r="2"></circle>
-                                </svg>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="2"></circle></svg>
                             </div>
                         </div>
-
                         <div class="analysis-game">
                             <span class="mini-game-icon">N</span>
-
-                            <div>
-                                <span class="section-label">JOGO SELECIONADO</span>
-                                <strong id="analysisGameName">Mega Sic Bac</strong>
-                            </div>
+                            <div><span class="section-label">JOGO SELECIONADO</span><strong id="analysisGameName">Mega Sic Bac</strong></div>
                         </div>
-
                         <div class="analysis-status-row">
                             <span>Status da análise</span>
-
-                            <span class="analysis-status" id="analysisStatus">
-                                <span class="status-dot"></span>
-                                Aguardando
-                            </span>
+                            <span class="analysis-status" id="analysisStatus"><span class="status-dot"></span>Aguardando</span>
                         </div>
-
                         <div class="analysis-visual" id="analysisVisual">
-
                             <div class="scan-line"></div>
-
                             <div class="analysis-core">
-                                <div class="core-ring core-ring-one"></div>
-                                <div class="core-ring core-ring-two"></div>
-
-                                <svg viewBox="0 0 24 24" aria-hidden="true">
-                                    <path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path>
-                                    <circle cx="12" cy="12" r="7"></circle>
-                                    <path d="m9 12 2 2 4-4"></path>
-                                </svg>
+                                <div class="core-ring core-ring-one"></div><div class="core-ring core-ring-two"></div>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"></path><circle cx="12" cy="12" r="7"></circle><path d="m9 12 2 2 4-4"></path></svg>
                             </div>
-
-                            <p>ENGINE STANDBY</p>
-                            <span>Aguardando solicitação</span>
-
+                            <p>ENGINE STANDBY</p><span>Aguardando solicitação</span>
                         </div>
-
-                        <button
-                            type="button"
-                            class="analyze-button"
-                            id="analyzeButton"
-                        >
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <circle cx="11" cy="11" r="7"></circle>
-                                <path d="m16 16 5 5M11 8v6M8 11h6"></path>
-                            </svg>
-
+                        <button type="button" class="analyze-button" id="analyzeButton">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5M11 8v6M8 11h6"></path></svg>
                             <span>ANALISAR ENTRADA</span>
                         </button>
-
                         <div class="analysis-result" id="analysisResult" aria-live="polite">
-                            <div class="result-topline">
-                                <span class="section-label">RESULTADO DA ANÁLISE</span>
-
-                                <span class="result-icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <path d="M12 3v18M3 12h18"></path>
-                                    </svg>
-                                </span>
-                            </div>
-
+                            <div class="result-topline"><span class="section-label">RESULTADO DA ANÁLISE</span><span class="result-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18"></path></svg></span></div>
                             <h4>Pronto para analisar</h4>
                         </div>
-
                         <div class="analysis-meta">
-
-                            <div>
-                                <span>Origem dos dados</span>
-                                <strong id="dataSource">NEXORA AI</strong>
-                            </div>
-
-                            <div>
-                                <span>Última análise</span>
-                                <strong id="lastAnalysis">—</strong>
-                            </div>
-
+                            <div><span>Origem dos dados</span><strong id="dataSource">NEXORA AI</strong></div>
+                            <div><span>Última análise</span><strong id="lastAnalysis">—</strong></div>
                         </div>
-
                     </aside>
 
-                </section>
-                                </section>
-
-                <!-- CONTADOR GREEN / RED -->
-                <section class="results-counter panel" id="resultsCounter" aria-labelledby="resultsCounterTitle">
-
-                    <div class="counter-header">
-                        <div>
-                            <span class="section-label">CONTROLE DE RESULTADOS</span>
-                            <h3 id="resultsCounterTitle">GREEN / RED</h3>
-                            <p>  Acompanhe seus GREENS e REDS por jogo. Registre cada resultado manualmente; contabilize o RED somente após 1 gale.</p>
+                    <!-- CONTADOR GREEN / RED: DENTRO DA GRADE, ABAIXO DOS PAINÉIS -->
+                    <section class="results-counter panel" id="resultsCounter" aria-labelledby="resultsCounterTitle">
+                        <div class="counter-header">
+                            <div>
+                                <span class="section-label">CONTROLE DE RESULTADOS</span>
+                                <h3 id="resultsCounterTitle">GREEN / RED</h3>
+                                <p>Acompanhe seus GREENS e REDS por jogo. Registre cada resultado manualmente; contabilize o RED somente após 1 gale.</p>
+                            </div>
+                            <span class="counter-storage"><span class="status-dot"></span>SALVO NO NAVEGADOR</span>
                         </div>
-
-                        <span class="counter-storage">
-                            <span class="status-dot"></span>
-                            SALVO NO NAVEGADOR
-                        </span>
-                    </div>
-
-                    <div class="counter-game-name" id="counterGameName">
-                        Mega Sic Bac
-                    </div>
-
-                    <div class="counter-grid">
-
-                        <!-- CONTADOR GREEN -->
-                        <article class="counter-card counter-green">
-                            <div class="counter-card-heading">
-                                <span class="counter-indicator"></span>
-                                <span>GREEN</span>
-                            </div>
-
-                            <strong class="counter-number" id="greenCount" aria-live="polite">0</strong>
-
-                            <div class="counter-actions">
-                                <button
-                                    type="button"
-                                    data-counter-action="green-decrease"
-                                    aria-label="Diminuir GREEN"
-                                >−</button>
-
-                                <button
-                                    type="button"
-                                    data-counter-action="green-increase"
-                                    aria-label="Adicionar GREEN"
-                                >+</button>
-                            </div>
-                        </article>
-
-                        <!-- CONTADOR RED -->
-                        <article class="counter-card counter-red">
-                            <div class="counter-card-heading">
-                                <span class="counter-indicator"></span>
-                                <span>RED</span>
-                            </div>
-
-                            <strong class="counter-number" id="redCount" aria-live="polite">0</strong>
-
-                            <div class="counter-actions">
-                                <button
-                                    type="button"
-                                    data-counter-action="red-decrease"
-                                    aria-label="Diminuir RED"
-                                >−</button>
-
-                                <button
-                                    type="button"
-                                    data-counter-action="red-increase"
-                                    aria-label="Adicionar RED"
-                                >+</button>
-                            </div>
-                        </article>
-
-                    </div>
-
-                    <p class="counter-note">
-                        Os registros são independentes para cada jogo e ficam salvos neste navegador.
-                        Limpar os dados do navegador pode apagá-los.
-                    </p>
-
+                        <div class="counter-game-name" id="counterGameName">Mega Sic Bac</div>
+                        <div class="counter-grid">
+                            <article class="counter-card counter-green">
+                                <div class="counter-card-heading"><span class="counter-indicator"></span><span>GREEN</span></div>
+                                <strong class="counter-number" id="greenCount" aria-live="polite">0</strong>
+                                <div class="counter-actions">
+                                    <button type="button" data-counter-action="green-decrease" aria-label="Diminuir GREEN">−</button>
+                                    <button type="button" data-counter-action="green-increase" aria-label="Adicionar GREEN">+</button>
+                                </div>
+                            </article>
+                            <article class="counter-card counter-red">
+                                <div class="counter-card-heading"><span class="counter-indicator"></span><span>RED</span></div>
+                                <strong class="counter-number" id="redCount" aria-live="polite">0</strong>
+                                <div class="counter-actions">
+                                    <button type="button" data-counter-action="red-decrease" aria-label="Diminuir RED">−</button>
+                                    <button type="button" data-counter-action="red-increase" aria-label="Adicionar RED">+</button>
+                                </div>
+                            </article>
+                        </div>
+                        <p class="counter-note">Os registros são independentes para cada jogo e ficam salvos neste navegador. Limpar os dados do navegador pode apagá-los.</p>
+                    </section>
                 </section>
-
-                <!-- RODAPÉ -->
-                <footer class="dashboard-footer"> 
 
                 <!-- RODAPÉ -->
                 <footer class="dashboard-footer">
-                    <span>© 2026 NEXORA AI</span>
-                    <span>ANÁLISE RESPONSÁVEL · DADOS VERIFICÁVEIS</span>
+                    <span>© 2026 NEXORA AI</span><span>ANÁLISE RESPONSÁVEL · DADOS VERIFICÁVEIS</span>
                 </footer>
-
             </div>
         </section>
     </main>
@@ -958,6 +400,5 @@
             });
         })();
     </script>
-
 </body>
 </html>
