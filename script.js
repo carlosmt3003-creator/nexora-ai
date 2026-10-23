@@ -66,7 +66,8 @@ const MEGA_SIC_BAC_STRATEGIES = [
     "Jogador ou empate",
     "Jogador",
     "Banca",
-    "Duplos de 3-5-6"
+    "Duplos de 4-5-6",
+    "Duplos de 1-2-3"
 ];
 
 
