@@ -1,538 +1,1106 @@
 
-"use strict";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-/* =====================================================
-   1. ELEMENTOS E CONFIGURAÇÕES
-   ===================================================== */
+:root {
+    --bg: #07111f;
+    --panel: #0c192a;
+    --panel2: #101f33;
+    --blue: #2789ff;
+    --purple: #9165ff;
+    --green: #20d69a;
+    --red: #ff526b;
+    --text: #edf4ff;
+    --muted: #8292aa;
+    --border: rgba(145, 174, 215, .12);
+}
 
-const $ = (selector) => document.querySelector(selector);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-const panel = $("#analyzerPanel");
-const analyzeBtn = $("#analyzeBtn");
-const buttonText = $("#buttonText");
-const progressBox = $("#analysisProgress");
-const progressFill = $("#totalProgress");
-const progressPercent = $("#progressPercent");
-const analysisState = $("#analysisState");
-const vaultSection = $("#vaultSection");
-const resultChoice = $("#resultChoice");
-const feedbackOverlay = $("#feedbackOverlay");
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', Arial, sans-serif;
+    min-height: 100vh;
+}
 
-const STEPS = [
-    "ESTABELECENDO CONEXÃO E VALIDANDO A INTEGRIDADE DA API",
-    "PROCESSANDO O HISTÓRICO DAS 120 RODADAS MAIS RECENTES",
-    "EXECUTANDO A DETECÇÃO E A CORRELAÇÃO DE PADRÕES ESTATÍSTICOS",
-    "PROCESSAMENTO FINALIZADO COM SUCESSO"
-];
+button, input {
+    font: inherit;
+}
 
-const ANALYSIS_DURATION = 20_000;
-const COOLDOWN_DURATION = 60_000;
-const STEP_DURATION = ANALYSIS_DURATION / STEPS.length;
+button {
+    cursor: pointer;
+}
 
-let analyzing = false;
-let nextAnalysisAt = 0;
-let analysisFrame = null;
-let feedbackTimer = null;
-let effectTimer = null;
-let cooldownTimer = null;
+.app {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 10% 0%, rgba(39,137,255,.09), transparent 35%),
+        radial-gradient(ellipse at 90% 30%, rgba(145,101,255,.07), transparent 35%),
+        var(--bg);
+}
 
-let greenCount = 0;
-let redCount = 0;
+.topbar {
+    height: 82px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(7,17,31,.88);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(16px);
+}
 
-let activeStepIndex = -1;
-let completedSteps = new Set();
-let startTime = 0;
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-/* =====================================================
-   2. SISTEMA DE SOM
-   Apenas um som pode tocar por vez.
-   ===================================================== */
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #2789ff, #7854ef);
+    border-radius: 12px;
+    font-size: 23px;
+    font-weight: 900;
+    box-shadow: 0 0 25px rgba(39,137,255,.3);
+}
 
-let audioContext = null;
-let currentOscillator = null;
+.brand h1 {
+    font-size: 17px;
+    letter-spacing: 1px;
+    font-weight: 900;
+}
 
-function playTone(frequency = 600, duration = 0.09, volume = 0.035) {
-    try {
-        audioContext ??= new (
-            window.AudioContext || window.webkitAudioContext
-        )();
+.brand h1 span,
+.footer-brand span {
+    color: var(--blue);
+}
 
-        if (audioContext.state === "suspended") {
-            audioContext.resume();
-        }
+.brand small {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 2px;
+}
 
-        // Interrompe o som anterior antes de tocar outro.
-        if (currentOscillator) {
-            try {
-                currentOscillator.stop();
-            } catch (_) {
-                // O oscilador pode já ter terminado.
-            }
+.system-status,
+.availability {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 10px;
+    color: #b5c6da;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
 
-            currentOscillator = null;
-        }
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    display: inline-block;
+}
 
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
+.container {
+    max-width: 1250px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 42px 0;
+}
 
-        currentOscillator = oscillator;
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+}
 
-        oscillator.type = "sine";
+.eyebrow {
+    font-size: 10px;
+    color: var(--blue);
+    font-weight: 800;
+    letter-spacing: 2px;
+}
 
-        oscillator.frequency.setValueAtTime(
-            frequency,
-            audioContext.currentTime
-        );
+.welcome h2 {
+    margin: 10px 0;
+    font-size: clamp(25px, 4vw, 36px);
+    letter-spacing: -1.5px;
+}
 
-        gain.gain.setValueAtTime(
-            volume,
-            audioContext.currentTime
-        );
+.welcome h2 span {
+    color: var(--blue);
+}
 
-        gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            audioContext.currentTime + duration
-        );
+.welcome p {
+    color: var(--muted);
+    font-size: 13px;
+}
 
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
+.clock-card {
+    min-width: 180px;
+    padding: 15px 20px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
-        oscillator.onended = () => {
-            if (currentOscillator === oscillator) {
-                currentOscillator = null;
-            }
+.clock-card small,
+.clock-card span {
+    color: var(--muted);
+    font-size: 10px;
+}
 
-            oscillator.disconnect();
-            gain.disconnect();
-        };
+.clock-card strong {
+    font-size: 25px;
+    letter-spacing: 1px;
+}
 
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + duration);
-    } catch (error) {
-        console.warn("Áudio indisponível:", error);
+.analysis-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.analysis-card,
+.result-panel,
+.timer-panel,
+.processing-panel {
+    background: linear-gradient(145deg, rgba(16,31,51,.97), rgba(10,23,39,.97));
+    border: 1px solid var(--border);
+    border-radius: 17px;
+}
+
+.analysis-card {
+    padding: 25px;
+    min-height: 245px;
+    position: relative;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.analysis-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(39,137,255,.4);
+}
+
+.blue-card {
+    box-shadow: inset 0 2px 0 rgba(39,137,255,.5);
+}
+
+.purple-card {
+    box-shadow: inset 0 2px 0 rgba(145,101,255,.5);
+}
+
+.card-icon {
+    font-size: 25px;
+    color: var(--blue);
+    margin-bottom: 15px;
+}
+
+.purple-card .card-icon {
+    color: var(--purple);
+}
+
+.card-label {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.analysis-card h3 {
+    margin: 9px 0;
+    font-size: 20px;
+}
+
+.analysis-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    max-width: 400px;
+}
+
+.card-bottom {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.primary-btn {
+    padding: 13px 17px;
+    border: 0;
+    border-radius: 9px;
+    background: linear-gradient(110deg, #1679f5, #329cff);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    transition: .25s;
+    box-shadow: 0 5px 20px rgba(39,137,255,.15);
+}
+
+.primary-btn span {
+    margin-left: 8px;
+}
+
+.primary-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.15);
+    box-shadow: 0 5px 25px rgba(39,137,255,.35);
+}
+
+.purple-btn {
+    background: linear-gradient(110deg, #7550e8, #a27aff);
+}
+
+button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    filter: grayscale(.6);
+}
+
+.timer-panel {
+    padding: 19px 22px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 13px;
+}
+
+.timer-info {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.timer-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: rgba(39,137,255,.12);
+    color: var(--blue);
+    font-size: 22px;
+}
+
+.timer-info strong {
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.timer-info p {
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.timer-value {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--blue);
+}
+
+.timer-track,
+.processing-track {
+    grid-column: 1 / -1;
+    height: 5px;
+    background: #1b2b40;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.timer-track div,
+.processing-track div {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    transition: width .2s linear;
+    border-radius: 20px;
+}
+
+.processing-panel,
+.result-panel {
+    padding: 25px;
+    margin-bottom: 20px;
+    animation: appear .4s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.processing-header,
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.processing-header h3,
+.section-heading h3 {
+    font-size: 19px;
+    margin-top: 7px;
+}
+
+.processing-header > strong {
+    color: var(--blue);
+    font-size: 23px;
+}
+
+.ai-network {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 35px auto 25px;
+    max-width: 700px;
+}
+
+.ai-node {
+    min-width: 125px;
+    padding: 15px 8px;
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    background: #10233b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+.ai-symbol {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: white;
+    background: linear-gradient(135deg, #1685ff, #7550e8);
+}
+
+.gemini-symbol {
+    background: linear-gradient(135deg, #31c6bd, #815dff);
+}
+
+.claude-symbol {
+    background: linear-gradient(135deg, #d78c59, #a95d38);
+}
+
+.ai-node strong {
+    font-size: 12px;
+}
+
+.ai-node small {
+    color: var(--muted);
+    font-size: 7px;
+    letter-spacing: .5px;
+}
+
+.network-line {
+    width: 45px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    position: relative;
+    overflow: hidden;
+}
+
+.network-line::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 2px;
+    background: white;
+    animation: travel 1s linear infinite;
+}
+
+.processing-message {
+    text-align: center;
+    color: #b5c6da;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.simulation-note {
+    display: block;
+    margin-top: 14px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.simulation-tag {
+    color: var(--green);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 8px 10px;
+    border-radius: 7px;
+    background: rgba(32,214,154,.08);
+    border: 1px solid rgba(32,214,154,.15);
+}
+
+.scenario-result {
+    text-align: center;
+    padding: 40px 15px;
+    margin-top: 25px;
+    border: 1px solid rgba(39,137,255,.2);
+    border-radius: 14px;
+    background: radial-gradient(circle, rgba(39,137,255,.12), transparent 70%);
+}
+
+.scenario-result > span {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.scenario-result strong {
+    display: block;
+    font-size: clamp(30px, 5vw, 45px);
+    margin: 15px 0;
+    color: var(--blue);
+}
+
+.scenario-result p {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.dice-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.dice-card {
+    background: #10233b;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 17px 8px;
+    text-align: center;
+    position: relative;
+}
+
+.dice-card.top-three {
+    border-color: rgba(39,137,255,.6);
+    box-shadow: 0 0 18px rgba(39,137,255,.1);
+}
+
+.dice-number {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--blue);
+}
+
+.dice-percent {
+    display: block;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 9px 0;
+}
+
+.dice-bar {
+    height: 4px;
+    background: #20334c;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.dice-bar div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+}
+
+.top-label {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 8px;
+    color: var(--green);
+    font-weight: 800;
+}
+
+.ranking-info {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 15px;
+    background: rgba(32,214,154,.06);
+    border: 1px solid rgba(32,214,154,.15);
+    border-radius: 10px;
+}
+
+.ranking-icon {
+    color: var(--green);
+    font-size: 23px;
+}
+
+.ranking-info strong {
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.ranking-info p {
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.liquid-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.liquid-card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.liquid {
+    width: 100px;
+    height: 150px;
+    border: 2px solid rgba(255,255,255,.1);
+    border-radius: 12px 12px 25px 25px;
+    background: #13243a;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.liquid::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: -50%;
+    top: calc(100% - var(--level, 50%));
+    border-radius: 40%;
+    animation: wave 5s linear infinite;
+}
+
+.blue-liquid::before {
+    background: rgba(39,137,255,.8);
+}
+
+.green-liquid::before {
+    background: rgba(32,214,154,.8);
+}
+
+.red-liquid::before {
+    background: rgba(255,82,107,.8);
+}
+
+.liquid span {
+    position: relative;
+    z-index: 2;
+    font-size: 19px;
+    font-weight: 900;
+    text-shadow: 0 2px 8px #07111f;
+}
+
+.liquid-card strong {
+    font-size: 12px;
+}
+
+.liquid-card small {
+    font-size: 9px;
+    color: var(--muted);
+}
+
+.liquid-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--green);
+}
+
+.secondary-btn {
+    background: #142b45;
+    border: 1px solid var(--border);
+    color: white;
+    padding: 11px 15px;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.secondary-btn:hover {
+    border-color: var(--blue);
+}
+
+.schedule-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0 15px;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    padding: 13px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 15px 13px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+}
+
+td:nth-child(2) {
+    color: var(--blue);
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.schedule-status {
+    color: var(--green);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.disclaimer {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.7;
+    margin-top: 17px;
+}
+
+.url-form {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.url-form input {
+    min-width: 0;
+    flex: 1;
+    background: #081525;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: white;
+    padding: 14px;
+    outline: none;
+    font-size: 12px;
+}
+
+.url-form input:focus {
+    border-color: var(--blue);
+}
+
+.iframe-container {
+    width: 100%;
+    min-height: 850px;
+}
+
+.iframe-header {
+    padding: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #10233b;
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.close-btn {
+    background: rgba(255,82,107,.1);
+    border: 1px solid rgba(255,82,107,.2);
+    color: var(--red);
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+iframe {
+    width: 100%;
+    height: 850px;
+    border: 0;
+    background: white;
+}
+@media(max-width: 750px) {
+    iframe {
+        height: 650px;
+    }
+
+    .iframe-container {
+        min-height: 650px;
+    }
+}
+footer {
+    padding: 35px 0 10px;
+    text-align: center;
+}
+
+.footer-brand {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+footer p {
+    margin-top: 9px;
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.toast {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    background: #142b45;
+    color: white;
+    padding: 14px 20px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-size: 11px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s;
+    z-index: 100;
+    text-align: center;
+    width: max-content;
+    max-width: 90%;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 0 rgba(39,137,255,0); }
+    to { box-shadow: 0 0 20px rgba(39,137,255,.2); }
+}
+
+@keyframes travel {
+    from { left: -15px; }
+    to { left: 100%; }
+}
+
+@keyframes wave {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 750px) {
+    .topbar {
+        padding: 0 5%;
+        height: 70px;
+    }
+
+    .brand h1 {
+        font-size: 13px;
+    }
+
+    .system-status {
+        font-size: 8px;
+    }
+
+    .container {
+        width: 92%;
+        padding-top: 28px;
+    }
+
+    .welcome {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .clock-card {
+        width: 100%;
+    }
+
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .analysis-card {
+        min-height: 225px;
+    }
+
+    .card-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .primary-btn {
+        width: 100%;
+        min-height: 46px;
+    }
+
+    .dice-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .ai-node {
+        min-width: 85px;
+        padding: 12px 4px;
+    }
+
+    .network-line {
+        width: 20px;
+    }
+
+    .liquid {
+        width: 75px;
+        height: 130px;
+    }
+
+    .liquid-grid {
+        gap: 8px;
+    }
+
+    .url-form {
+        flex-direction: column;
+    }
+
+    iframe {
+        height: 400px;
     }
 }
 
-function playCompletionSound() {
-    // Um único som ao finalizar, sem sequência de bipes.
-    playTone(880, 0.2, 0.04);
+@media (max-width: 390px) {
+    .brand small {
+        font-size: 7px;
+    }
+
+    .system-status {
+        font-size: 7px;
+        gap: 5px;
+    }
+
+    .ai-node {
+        min-width: 75px;
+    }
+
+    .ai-node strong {
+        font-size: 10px;
+    }
+
+    .network-line {
+        width: 12px;
+    }
+
+    .liquid {
+        width: 65px;
+        height: 115px;
+    }
+
+    .liquid span {
+        font-size: 15px;
+    }
+
+    .section-heading h3 {
+        font-size: 16px;
+    }
+}
+.dice-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 
-/* =====================================================
-   3. ETAPAS E BARRAS DE PROGRESSO
-   ===================================================== */
-
-function resetSteps() {
-    document.querySelectorAll(".analysis-step").forEach((step) => {
-        step.classList.remove("active", "complete");
-
-        const fill = step.querySelector(".step-fill");
-        const percent = step.querySelector(".step-percent");
-
-        if (fill) fill.style.width = "0%";
-        if (percent) percent.textContent = "0%";
-    });
-
-    progressFill.style.width = "0%";
-    progressPercent.textContent = "0%";
-
-    analysisState.textContent = "INICIALIZANDO PROCESSAMENTO";
+.dice-card {
+    min-height: 175px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
 }
 
-function updateStep(stepIndex, percent) {
-    const step = document.querySelector(
-        `.analysis-step[data-step="${stepIndex}"]`
+.dice-face {
+    font-family: "Arial", sans-serif;
+    font-size: 65px;
+    line-height: 1.2;
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(39,137,255,.35);
+    margin-bottom: 10px;
+}
+
+.dice-number {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #91a9c7;
+}
+
+.dice-percent {
+    color: #48a4ff;
+    font-size: 23px;
+    margin: 8px 0;
+}
+
+.dice-card.top-three {
+    border-color: #2789ff;
+    background: linear-gradient(
+        145deg,
+        #142e4b,
+        #0c192a
     );
-
-    if (!step) return;
-
-    const fill = step.querySelector(".step-fill");
-    const label = step.querySelector(".step-percent");
-
-    if (fill) fill.style.width = `${percent}%`;
-    if (label) label.textContent = `${percent}%`;
 }
 
-function activateStep(stepIndex) {
-    const step = document.querySelector(
-        `.analysis-step[data-step="${stepIndex}"]`
-    );
-
-    if (!step) return;
-
-    // Somente uma etapa fica ativa visualmente.
-    document.querySelectorAll(".analysis-step").forEach((item) => {
-        item.classList.remove("active");
-    });
-
-    step.classList.add("active");
-    analysisState.textContent = STEPS[stepIndex];
-
-    // Um som apenas quando uma nova etapa começa.
-    playTone(480 + stepIndex * 90, 0.08, 0.025);
-}
-
-function completeStep(stepIndex) {
-    // Impede concluir ou reproduzir eventos da mesma etapa novamente.
-    if (completedSteps.has(stepIndex)) return;
-
-    completedSteps.add(stepIndex);
-
-    const step = document.querySelector(
-        `.analysis-step[data-step="${stepIndex}"]`
-    );
-
-    if (!step) return;
-
-    step.classList.remove("active");
-    step.classList.add("complete");
-
-    const fill = step.querySelector(".step-fill");
-    const percent = step.querySelector(".step-percent");
-
-    if (fill) fill.style.width = "100%";
-    if (percent) percent.textContent = "100%";
-
-    // Não toca som ao concluir.
-    // O som é reproduzido somente ao iniciar cada etapa.
-}
-
-/* =====================================================
-   4. EXECUÇÃO DA ANÁLISE
-   ===================================================== */
-
-function runAnalysis() {
-    if (analyzing || Date.now() < nextAnalysisAt) return;
-
-    analyzing = true;
-    nextAnalysisAt = Date.now() + COOLDOWN_DURATION;
-
-    // Cancela uma animação anterior, se houver.
-    if (analysisFrame !== null) {
-        cancelAnimationFrame(analysisFrame);
-        analysisFrame = null;
+@media(max-width: 500px) {
+    .dice-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    analyzing = true;
-    activeStepIndex = -1;
-    completedSteps = new Set();
-
-    analyzeBtn.disabled = true;
-    buttonText.textContent = "ANÁLISE EM PROCESSAMENTO";
-
-    progressBox.hidden = false;
-    vaultSection.hidden = true;
-
-    resetSteps();
-
-    startTime = performance.now();
-
-    // Inicia apenas a primeira etapa.
-    activeStepIndex = 0;
-    activateStep(0);
-
-    // Inicia o ciclo de atualização.
-    analysisFrame = requestAnimationFrame(tick);
-}
-
-function tick(now) {
-    if (!analyzing) return;
-
-    const elapsed = Math.min(
-        now - startTime,
-        ANALYSIS_DURATION
-    );
-
-    const overall = Math.min(
-        100,
-        Math.floor((elapsed / ANALYSIS_DURATION) * 100)
-    );
-
-    progressFill.style.width = `${overall}%`;
-    progressPercent.textContent = `${overall}%`;
-
-    const currentStep = Math.min(
-        STEPS.length - 1,
-        Math.floor(elapsed / STEP_DURATION)
-    );
-
-    // Atualiza as etapas sem repetir conclusões ou sons.
-    STEPS.forEach((_, index) => {
-        if (elapsed >= (index + 1) * STEP_DURATION) {
-            completeStep(index);
-        } else if (index === currentStep) {
-            const stepProgress = Math.min(
-                100,
-                Math.floor(
-                    ((elapsed - index * STEP_DURATION) /
-                        STEP_DURATION) * 100
-                )
-            );
-
-            updateStep(index, stepProgress);
-        }
-    });
-
-    // Ativa uma nova etapa somente quando necessário.
-    if (currentStep !== activeStepIndex) {
-        activeStepIndex = currentStep;
-        activateStep(currentStep);
+    .dice-face {
+        font-size: 58px;
     }
+}
+/* ==========================================
+   DADOS BRANCOS COM PONTOS PRETOS
+========================================== */
 
-    if (elapsed < ANALYSIS_DURATION) {
-        analysisFrame = requestAnimationFrame(tick);
-        return;
-    }
-
-    analysisFrame = null;
-    finishAnalysis();
+.dice-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+    align-items: start;
+    width: 100%;
 }
 
-/* =====================================================
-   5. PORCENTAGENS DEMONSTRATIVAS
-   Verde: máximo de 3%.
-   Soma total: exatamente 100%.
-   ===================================================== */
-
-function generateProbabilities() {
-    const green = Math.floor(Math.random() * 4);
-    const remaining = 100 - green;
-
-    const blue = Math.floor(
-        Math.random() * (remaining + 1)
-    );
-
-    const red = remaining - blue;
-
-    return { blue, green, red };
+.dice-card {
+    min-width: 0;
+    padding: 10px 5px;
+    text-align: center;
+    border-radius: 12px;
 }
 
-function updateLiquid(selector, percentage) {
-    const item = $(selector);
+.dice-face {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 9px;
+    padding: 6px;
+    box-sizing: border-box;
 
-    if (!item) return;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 3px;
 
-    const percent = item.querySelector(".vault-percent");
-    const liquid = item.querySelector(".liquid");
-    const wave = item.querySelector(".liquid-wave");
+    background: #ffffff;
+    border: 1px solid #d5d9e0;
+    border-radius: 9px;
 
-    if (percent) percent.textContent = `${percentage}%`;
-    if (liquid) liquid.style.height = `${percentage}%`;
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.16),
+        inset 0 1px 2px rgba(0, 0, 0, 0.06);
+}
 
-    if (wave) {
-        wave.style.height = `${Math.min(percentage + 8, 100)}%`;
+.pip {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: transparent;
+    justify-self: center;
+    align-self: center;
+}
+
+.pip.active {
+    background: #111111;
+}
+
+.dice-number {
+    font-size: 9px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.dice-percent {
+    display: block;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.dice-bar {
+    height: 4px;
+    margin-top: 7px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.dice-bar > div {
+    height: 100%;
+    border-radius: inherit;
+}
+
+.top-label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    margin-top: 6px;
+}
+
+@media (max-width: 650px) {
+    .dice-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
     }
 }
 
-function showResult(probabilities) {
-    const { blue, green, red } = probabilities;
-
-    updateLiquid("#blueVault", blue);
-    updateLiquid("#greenVault", green);
-    updateLiquid("#redVault", red);
-
-    $("#bluePercent").textContent = `${blue}%`;
-    $("#greenPercent").textContent = `${green}%`;
-    $("#redPercent").textContent = `${red}%`;
-
-    $("#sumPercent").textContent =
-        `TOTAL: ${blue + green + red}%`;
-
-    const entries = [
-        { name: "PLAYER (AZUL)", value: blue, color: "blue" },
-        { name: "EMPATE (VERDE)", value: green, color: "green" },
-        { name: "BANKER (VERMELHA)", value: red, color: "red" }
-    ];
-
-    const winner = entries.reduce((best, entry) =>
-        entry.value > best.value ? entry : best
-    );
-
-    resultChoice.classList.remove(
-        "result-blue",
-        "result-green",
-        "result-red"
-    );
-
-    resultChoice.classList.add(`result-${winner.color}`);
-
-    $("#resultName").textContent = winner.name;
-    $("#resultValue").textContent = `${winner.value}%`;
-
-    vaultSection.hidden = false;
+@media (max-width: 360px) {
+    .dice-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
-
-/* =====================================================
-   6. FINALIZAÇÃO
-   ===================================================== */
-
-function finishAnalysis() {
-    if (!analyzing) return;
-
-    if (analysisFrame !== null) {
-        cancelAnimationFrame(analysisFrame);
-        analysisFrame = null;
-    }
-
-    // Garante que todas as etapas sejam concluídas uma única vez.
-    STEPS.forEach((_, index) => {
-        completeStep(index);
-    });
-
-    progressFill.style.width = "100%";
-    progressPercent.textContent = "100%";
-    analysisState.textContent = STEPS[3];
-
-    const probabilities = generateProbabilities();
-    showResult(probabilities);
-
-    analyzing = false;
-
-    buttonText.textContent = "ANÁLISE CONCLUÍDA";
-
-    // Um único som de conclusão.
-    playCompletionSound();
-
-    updateCooldown();
-}
-
-function updateCooldown() {
-    if (cooldownTimer !== null) {
-        clearTimeout(cooldownTimer);
-        cooldownTimer = null;
-    }
-
-    if (analyzing) return;
-
-    const remaining = nextAnalysisAt - Date.now();
-
-    if (remaining <= 0) {
-        analyzeBtn.disabled = false;
-        buttonText.textContent = "ANALISAR NOVAMENTE";
-        return;
-    }
-
-    analyzeBtn.disabled = true;
-
-    const seconds = Math.ceil(remaining / 1000);
-    buttonText.textContent = `AGUARDE ${seconds}s`;
-
-    cooldownTimer = window.setTimeout(
-        updateCooldown,
-        Math.min(1000, remaining)
-    );
-}
-
-/* =====================================================
-   7. REGISTROS GREEN / RED
-   ===================================================== */
-
-function showFeedback(type) {
-    const isGreen = type === "green";
-
-    clearTimeout(feedbackTimer);
-    clearTimeout(effectTimer);
-
-    panel.classList.remove("effect-green", "effect-red");
-    feedbackOverlay.classList.remove("red-feedback");
-
-    if (isGreen) {
-        greenCount++;
-        $("#greenCount").textContent = greenCount;
-
-        panel.classList.add("effect-green");
-
-        $("#feedbackSymbol").textContent = "✓";
-        $("#feedbackTitle").textContent = "GREEN!";
-        $("#feedbackMessage").textContent =
-            "Registro GREEN adicionado.";
-    } else {
-        redCount++;
-        $("#redCount").textContent = redCount;
-
-        panel.classList.add("effect-red");
-        feedbackOverlay.classList.add("red-feedback");
-
-        $("#feedbackSymbol").textContent = "×";
-        $("#feedbackTitle").textContent = "RED!";
-        $("#feedbackMessage").textContent =
-            "Registro RED adicionado.";
-    }
-
-    feedbackOverlay.classList.add("show");
-
-    // Um único som por clique.
-    playTone(isGreen ? 780 : 300, 0.15, 0.035);
-
-    feedbackTimer = window.setTimeout(() => {
-        feedbackOverlay.classList.remove("show");
-    }, 2000);
-
-    effectTimer = window.setTimeout(() => {
-        panel.classList.remove("effect-green", "effect-red");
-    }, 2000);
-}
-
-/* =====================================================
-   8. EVENTOS DOS BOTÕES
-   ===================================================== */
-
-analyzeBtn.addEventListener("click", runAnalysis);
-
-$("#greenBtn").addEventListener("click", () => {
-    showFeedback("green");
-});
-
-$("#redBtn").addEventListener("click", () => {
-    showFeedback("red");
-});
-
-/* =====================================================
-   PLATAFORMA INTEGRADA - IFRAME
-   ===================================================== */
-
-const platformUrl = $("#platformUrl");
-const platformFrame = $("#platformFrame");
-const platformStatus = $("#platformStatus");
-
-$("#loadPlatform").addEventListener("click", () => {
-    let url = platformUrl.value.trim();
-
-    if (!url) {
-        platformStatus.textContent = "INFORME UM ENDEREÇO VÁLIDO";
-        return;
-    }
-
-    if (!/^https?:\/\//i.test(url)) {
-        url = "https://" + url;
-    }
-
-    try {
-        const parsedUrl = new URL(url);
-
-        if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-            throw new Error("Endereço inválido");
-        }
-
-        platformFrame.src = parsedUrl.href;
-
-        platformStatus.textContent =
-            "CARREGANDO PLATAFORMA: " + parsedUrl.hostname;
-
-    } catch (error) {
-        platformStatus.textContent = "URL INVÁLIDA";
-    }
-});
-
-$("#reloadPlatform").addEventListener("click", () => {
-    if (platformFrame.src !== "about:blank") {
-        platformFrame.src = platformFrame.src;
-        platformStatus.textContent = "ATUALIZANDO PLATAFORMA...";
-    }
-});
-
-platformFrame.addEventListener("load", () => {
-    if (platformFrame.src !== "about:blank") {
-        platformStatus.textContent = "CARREGAMENTO DO IFRAME CONCLUÍDO";
-    }
-});
