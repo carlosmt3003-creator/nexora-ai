@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#07111f">
+    <meta name="theme-color" content="#080d18">
     <title>MEGA SIC BAC</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,255 +12,187 @@
 
 <div class="app">
 
-    <header class="topbar">
+    <header class="header">
         <div class="brand">
-            <div class="brand-icon">H</div>
+            <div class="brand-icon">M</div>
             <div>
-                <h1>MEGA <span>SIC BAC</span></h1>
-                <small>INTELLIGENCE DASHBOARD</small>
+                <h1>MEGA SIC BAC</h1>
+                <span>PAINEL DE ANÁLISE</span>
             </div>
         </div>
-
-        <div class="system-status">
-            <span class="status-dot"></span>
-            SISTEMA ONLINE
-        </div>
+        <button class="icon-button" id="settingsButton">⚙</button>
     </header>
 
-    <main class="container">
+    <main>
 
-        <section class="welcome">
-            <div>
-                <span class="eyebrow">CENTRAL DE INTELIGÊNCIA</span>
-                <h2>Painel de <span>Inteligência Analítica</span></h2>
-<p>Central de análise estatística com indicadores, métricas e projeções baseadas nos dados disponíveis.</p>
-            </div>
-
-            <div class="clock-card">
-                <small>HORÁRIO LOCAL</small>
-                <strong id="clock">00:00:00</strong>
-                <span id="date">Carregando...</span>
-            </div>
-        </section>
-
-        <section class="analysis-grid">
-
-            <article class="analysis-card blue-card">
-                <div class="card-icon">✦</div>
-                <span class="card-label">ENTRADA NAS CORES</span>
-         <h3>TECNOLOGIA DE ANÁLISE INTELIGENTE</h3>
-                
-
-                <div class="card-bottom">
-                    <span class="availability">
-                        <span class="status-dot"></span>
-                        DISPONÍVEL
-                    </span>
-                    <button id="analyzeBtn" class="primary-btn">
-                        IA PREMIUN <span>→</span>
-                    </button>
-                </div>
-            </article>
-
-            <article class="analysis-card purple-card">
-                <div class="card-icon">◈</div>
-                <span class="card-label">ENTRADA NOS DUPLOS</span>
-                <h3><h3>SISTEMA AVANÇADO DE INTELIGÊNCIA ANALÍTICA</h3></h3>
-               <p>Análise estatística das seis faces do dado, com indicadores de frequência e distribuição histórica dos resultados registrados.</p>
-
-                <div class="card-bottom">
-                    <span class="availability">
-                        <span class="status-dot"></span>
-                        DISPONÍVEL
-                    </span>
-                    <button id="doublesBtn" class="primary-btn purple-btn">
-                        ANALISAR DUPLOS <span>→</span>
-                    </button>
-                </div>
-            </article>
-
-        </section>
-
-        <section class="timer-panel">
-            <div class="timer-info">
-                <div class="timer-icon">◷</div>
-                <div>
-                    <strong>Tempo de processamento e identificação de padrões</strong>
-
-                </div>
-            </div>
-
-            <div class="timer-value" id="timerValue">00:40</div>
-
-            <div class="timer-track">
-                <div id="timerProgress"></div>
-            </div>
-        </section>
-
-        <section class="processing-panel hidden" id="processingPanel">
-            <div class="processing-header">
-                <div>
-                    <span class="eyebrow">PROCESSAMENTO LOCAL</span>
-                    <h3 id="processingTitle">Central de simulação</h3>
-                </div>
-                <strong id="analysisCountdown">10s</strong>
-            </div>
-
-            <div class="ai-network">
-                <div class="ai-node">
-                    <div class="ai-symbol">C</div>
-                    <strong>ChatGPT</strong>
-                    <small>IDENTIDADE VISUAL</small>
-                </div>
-
-                <div class="network-line"></div>
-
-                <div class="ai-node">
-                    <div class="ai-symbol gemini-symbol">✧</div>
-                    <strong>Gemini</strong>
-                    <small>IDENTIDADE VISUAL</small>
-                </div>
-
-                <div class="network-line"></div>
-
-                <div class="ai-node">
-                    <div class="ai-symbol claude-symbol">A</div>
-                    <strong>Claude</strong>
-                    <small>IDENTIDADE VISUAL</small>
-                </div>
-            </div>
-
-            <p class="processing-message" id="processingMessage">
-                Inicializando simulação local...
-            </p>
-
-            <div class="processing-track">
-                <div id="processingProgress"></div>
-            </div>
-
-            <small class="simulation-note">
-Análises inteligentes realizadas por IA integrada, com processamento de dados e identificação de padrões estatísticos.
-            </small>
-        </section>
-
-        <section class="result-panel hidden" id="scenarioResult">
+        <section id="inicio" class="section">
             <div class="section-heading">
-                <div>
-                    <span class="eyebrow">RESULTADO DEMONSTRATIVO</span>
-                    <h3>Cenário gerado</h3>
-                </div>
-                <span class="simulation-tag">SIMULAÇÃO</span>
+                <h2>ÁREA DO JOGO</h2>
+                <button id="toggleGame">Expandir</button>
             </div>
 
-            <div class="scenario-result">
-                <span>CENÁRIO ILUSTRATIVO</span>
-                <strong id="scenarioName">CENÁRIO A</strong>
-<p>Análise estatística com inteligência artificial, baseada no processamento de dados e na identificação de padrões históricos.</p>
+            <div class="game-card" id="gameCard">
+                <iframe id="gameFrame" src="about:blank"
+                    title="Área configurável do jogo"></iframe>
+                <p id="gamePlaceholder">Configure o endereço do iframe nas configurações.</p>
             </div>
         </section>
 
-        <section class="result-panel hidden" id="diceResult">
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">ANÁLISE MATEMÁTICA</span>
-                    <h3>TOP 3 INDICADORES ESTATÍSTICOS</h3>
+        <div class="analysis-grid">
+
+            <section id="cores" class="panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">ANÁLISE 01</span>
+                        <h2>ANÁLISE DE CORES</h2>
+                    </div>
+                    <span class="status-dot"></span>
                 </div>
-                <span class="simulation-tag">100% TOTAL</span>
-            </div>
 
-            <div class="dice-grid" id="diceGrid"></div>
-
-            <div class="ranking-info">
-                <span class="ranking-icon">★</span>
-                <div>
-                    <strong>TRÊS MAIORES VALORES</strong>
-                   <p id="rankingText">Aguardando processamento dos indicadores estatísticos...</p>
+                <div class="result-box">
+                    <span class="result-label">RESULTADO</span>
+                    <h3 id="colorResult">AGUARDANDO</h3>
+                    <p id="colorProtection">PROTEGER EMPATE ATÉ G1</p>
+                    <strong id="colorPercentage">--%</strong>
                 </div>
-            </div>
-        </section>
 
-        <!-- HORÁRIOS MONITORADOS MANTIDOS -->
-
-        <section class="result-panel">
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">MONITORAMENTO PARA ENTRA NOS TRIPLOS</span>
-                    <h3>Horários monitorados</h3>
+                <div class="progress-track">
+                    <div id="colorProgress" class="progress-fill"></div>
                 </div>
-                <span class="simulation-tag">TEMPO REAL</span>
-            </div>
 
-            <div class="schedule-info">
-                <span>PRÓXIMOS TENDECIA DE TRIPLOS</span>
-                <span>INTERVALO: 02 MIN</span>
-            </div>
+                <p id="colorStatus" class="status-text">Sistema disponível</p>
 
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ORDEM</th>
-                            <th>HORÁRIO</th>
-                            <th>STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody id="scheduleBody"></tbody>
-                </table>
-            </div>
-
-            <p class="disclaimer">
-Os horários representam referências estatísticas calculadas com base em probabilidades, frequências históricas e tendências identificadas nos dados analisados.
-            </p>
-        </section>
-
-        <section class="result-panel platform-panel">
-            <div class="section-heading">
-                <div>
-                    <span class="eyebrow">NAVEGAÇÃO EXTERNA</span>
-                    <h3>Plataforma externa</h3>
-                </div>
-                <span class="simulation-tag">PLATAFORMA</span>
-            </div>
-
-            <div class="url-form">
-                <input
-                    type="url"
-                    id="platformUrl"
-                    placeholder="https://exemplo.com"
-                    autocomplete="url"
-                >
-
-                <button id="loadPlatform" class="primary-btn">
-                    CARREGAR PLATAFORMA →
+                <button class="primary-button" id="colorButton">
+                    ANALISAR CORES
                 </button>
-            </div>
+                <div class="manual-result">
+    <span>REGISTRAR RESULTADO</span>
 
-            <div id="iframeContainer" class="iframe-container hidden">
-                <div class="iframe-header">
-                    <span id="iframeAddress">PLATAFORMA</span>
-                    <button id="closePlatform" class="close-btn">FECHAR ×</button>
-                </div>
-
-                <iframe
-                    id="platformFrame"
-                    title="Visualização de plataforma externa"
-                    loading="lazy"
-                    referrerpolicy="no-referrer"
-                ></iframe>
-            </div>
-
-            <p class="disclaimer">
-                Algumas páginas externas bloqueiam a incorporação por iframe.
-                Carregue apenas sites confiáveis e autorizados.
-            </p>
-        </section>
-
-        
-
-    </main>
+    <div class="manual-buttons">
+        <button class="green-button" id="colorGreen">GREEN</button>
+        <button class="red-button" id="colorRed">RED</button>
+    </div>
 </div>
 
-<div id="toast" class="toast"></div>
+                <div class="countdown" id="colorCountdown"></div>
+            </section>
+
+            <section id="duplos" class="panel">
+                <div class="panel-header">
+                    <div>
+                        <span class="eyebrow">ANÁLISE 02</span>
+                        <h2>ANÁLISE DE DUPLOS</h2>
+                    </div>
+                    
+                    <span class="status-dot"></span>
+                </div>
+
+                <div class="dice-grid" id="diceGrid">
+                    <div class="die" data-number="1"></div>
+                    <div class="die" data-number="2"></div>
+                    <div class="die" data-number="3"></div>
+                    <div class="die" data-number="4"></div>
+                    <div class="die" data-number="5"></div>
+                    <div class="die" data-number="6"></div>
+                </div>
+
+                <div class="result-box">
+                    <span class="result-label">TRÊS MAIORES PERCENTUAIS</span>
+                    <div id="doubleResult" class="ranking">
+                        Aguardando análise
+                    </div>
+                    <p>PROTEÇÃO ATÉ G2</p>
+                </div>
+
+                <div class="progress-track">
+                    <div id="doubleProgress" class="progress-fill"></div>
+                </div>
+
+                <p id="doubleStatus" class="status-text">Sistema disponível</p>
+
+                <button class="primary-button" id="doubleButton">
+                    ANALISAR MELHOR DUPLO
+                </button>
+                <div class="manual-result">
+    <span>REGISTRAR RESULTADO</span>
+
+    <div class="manual-buttons">
+        <button class="green-button" id="doubleGreen">GREEN</button>
+        <button class="red-button" id="doubleRed">RED</button>
+    </div>
+</div>
+
+                <div class="countdown" id="doubleCountdown"></div>
+            </section>
+
+        </div>
+
+        <section id="triplos" class="panel">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">ANÁLISE 03</span>
+                    <h2>MELHORES HORÁRIOS — TRIPLOS</h2>
+                </div>
+                <span id="clock">--:--:--</span>
+            </div>
+
+            <div class="time-list" id="timeList"></div>
+        </section>
+
+        <section id="historico" class="panel">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">REGISTROS</span>
+                    <h2>HISTÓRICO</h2>
+                </div>
+                <button id="clearHistory" class="secondary-button">Limpar</button>
+            </div>
+
+            <div id="historyList" class="history-list">
+                Nenhum registro disponível.
+            </div>
+        </section>
+
+        <section id="configuracoes" class="panel settings-panel">
+            <div class="panel-header">
+                <div>
+                    <span class="eyebrow">PERSONALIZAÇÃO</span>
+                    <h2>CONFIGURAÇÕES</h2>
+                </div>
+            </div>
+
+            <label class="setting-row">
+                <span>Tema escuro</span>
+                <input type="checkbox" id="themeToggle" checked>
+            </label>
+
+            <label class="setting-row">
+                <span>Sons do aplicativo</span>
+                <input type="checkbox" id="soundToggle">
+            </label>
+
+            <label class="setting-row iframe-setting">
+                <span>Endereço do iframe</span>
+                <input type="url" id="iframeUrl"
+                    placeholder="https://exemplo.com">
+            </label>
+
+            <button class="primary-button" id="saveSettings">
+                SALVAR CONFIGURAÇÕES
+            </button>
+        </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="#inicio"><span>⌂</span>Início</a>
+        <a href="#cores"><span>◉</span>Cores</a>
+        <a href="#duplos"><span>⚄</span>Duplos</a>
+        <a href="#triplos"><span>◷</span>Triplos</a>
+        <a href="#configuracoes"><span>⚙</span>Ajustes</a>
+    </nav>
+
+</div>
 
 <script src="script.js"></script>
 </body>
