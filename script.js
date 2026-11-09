@@ -1,693 +1,574 @@
+
 "use strict";
 
-/* ==========================================
-   HOMERC FEEDBACK
-   SISTEMA DE SIMULAÇÃO LOCAL
-========================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const $ = (selector) => document.querySelector(selector);
-
-    /* ELEMENTOS */
-
-    const analyzeBtn = $("#analyzeBtn");
-    const doublesBtn = $("#doublesBtn");
-
-    const processingPanel = $("#processingPanel");
-    const scenarioResult = $("#scenarioResult");
-    const diceResult = $("#diceResult");
-
-    const processingTitle = $("#processingTitle");
-    const processingMessage = $("#processingMessage");
-    const processingProgress = $("#processingProgress");
-    const analysisCountdown = $("#analysisCountdown");
-
-    const timerValue = $("#timerValue");
-    const timerProgress = $("#timerProgress");
-    const timerMessage = $("#timerMessage");
-
-    const toast = $("#toast");
-
-    /* CONFIGURAÇÕES */
-
-    const ANALYSIS_DURATION = 10;
-    const COOLDOWN_DURATION = 40;
-
-    let analysisRunning = false;
-    let cooldownEnd = 0;
-
-    let analysisInterval = null;
-    let cooldownInterval = null;
-    let toastTimeout = null;
-
-    /* ==========================================
-       NOTIFICAÇÕES
-    ========================================== */
-
-    function showToast(message) {
-        if (!toast) return;
-
-        toast.textContent = message;
-        toast.classList.add("show");
-
-        clearTimeout(toastTimeout);
-
-        toastTimeout = setTimeout(() => {
-            toast.classList.remove("show");
-        }, 3000);
-    }
-
-    /* ==========================================
-       RELÓGIO
-    ========================================== */
-
-    function updateClock() {
-        const now = new Date();
-
-        const clock = $("#clock");
-        const date = $("#date");
-
-        if (clock) {
-            clock.textContent = now.toLocaleTimeString("pt-BR");
-        }
-
-        if (date) {
-            date.textContent = now.toLocaleDateString("pt-BR", {
-                weekday: "long",
-                day: "2-digit",
-                month: "long",
-                year: "numeric"
-            });
-        }
-
-        const minuteKey = [
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate(),
-            now.getHours(),
-            now.getMinutes()
-        ].join("-");
-
-        if (minuteKey !== updateClock.lastMinute) {
-            updateClock.lastMinute = minuteKey;
-            updateSchedule(now);
-        }
-    }
-
-    /* ==========================================
-       HORÁRIOS MONITORADOS
-       Marcadores de tempo, não previsões.
-    ========================================== */
-
-    function updateSchedule(now = new Date()) {
-        const tbody = $("#scheduleBody");
-
-        if (!tbody) return;
-
-        tbody.innerHTML = "";
-
-        const base = new Date(now);
-        base.setSeconds(0, 0);
-
-        for (let i = 1; i <= 5; i++) {
-            const future = new Date(
-                base.getTime() + i * 2 * 60 * 1000
-            );
-
-            const time = future.toLocaleTimeString("pt-BR", {
-                hour: "2-digit",
-                minute: "2-digit"
-            });
-
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>0${i}</td>
-                <td>${time}</td>
-                <td>
-                    <span class="schedule-status">
-                        ● AGUARDANDO
-                    </span>
-                </td>
-            `;
-
-            tbody.appendChild(row);
-        }
-    }
-
-    /* ==========================================
-       DISTRIBUIÇÃO PERCENTUAL
-       Soma exatamente 100%.
-    ========================================== */
-
-    function generatePercentages(count, minimum = 0) {
-        const values = [];
-
-        for (let i = 0; i < count; i++) {
-            values.push(
-                Math.floor(Math.random() * 100) + 1
-            );
-        }
-
-        const total = values.reduce((a, b) => a + b, 0);
-
-        const available = 100 - minimum * count;
-
-        const exact = values.map(value =>
-            (value / total) * available
-        );
-
-        const percentages = exact.map(value =>
-            Math.floor(value) + minimum
-        );
-
-        const remainder =
-            100 - percentages.reduce((a, b) => a + b, 0);
-
-        const order = exact
-            .map((value, index) => ({
-                index,
-                decimal: value - Math.floor(value)
-            }))
-            .sort((a, b) => b.decimal - a.decimal);
-
-        for (let i = 0; i < remainder; i++) {
-            percentages[order[i].index]++;
-        }
-
-        return percentages;
-    }
-
-    /* ==========================================
-       SIMULAÇÃO DOS DADOS
-    ========================================== */
-
-    function generateDiceAnalysis() {
-        const grid = $("#diceGrid");
-        const rankingText = $("#rankingText");
-
-        if (!grid) {
-            showToast("Não foi encontrado o espaço dos dados no HTML.");
-            return;
-        }
-
-        const values = generatePercentages(6);
-
-        const pipPositions = {
-            1: [5],
-            2: [1, 9],
-            3: [1, 5, 9],
-            4: [1, 3, 7, 9],
-            5: [1, 3, 5, 7, 9],
-            6: [1, 3, 4, 6, 7, 9]
-        };
-
-        const dice = values.map((percentage, index) => ({
-            number: index + 1,
-            percentage
-        }));
-
-        dice.sort((a, b) => a.number - b.number);
-
-        const ranking = [...dice].sort(
-            (a, b) => b.percentage - a.percentage
-        );
-
-        const topThree = ranking.slice(0, 3);
-
-        grid.innerHTML = "";
-
-        dice.forEach(item => {
-            const isTop = topThree.some(
-                top => top.number === item.number
-            );
-
-            const pips = Array.from(
-                { length: 9 },
-                (_, index) => {
-                    const position = index + 1;
-
-                    return `
-                        <span class="pip ${
-                            pipPositions[item.number].includes(position)
-                                ? "active"
-                                : ""
-                        }"></span>
-                    `;
-                }
-            ).join("");
-
-            const card = document.createElement("div");
-
-            card.className =
-                `dice-card ${isTop ? "top-three" : ""}`;
-
-            card.innerHTML = `
-                <div class="dice-face">
-                    ${pips}
-                </div>
-
-                <div class="dice-number">
-                    DADO ${item.number}
-                </div>
-
-                <span class="dice-percent">
-                    ${item.percentage}%
-                </span>
-
-                <div class="dice-bar">
-                    <div style="width:${item.percentage}%"></div>
-                </div>
-
-                ${
-                    isTop
-                    ? '<span class="top-label">★ TOP 3</span>'
-                    : '<span class="top-label" style="visibility:hidden">---</span>'
-                }
-            `;
-
-            grid.appendChild(card);
-        });
-
-        if (rankingText) {
-            rankingText.textContent = ranking
-                .slice(0, 3)
-                .map(item =>
-                    `Dado ${item.number}: ${item.percentage}%`
-                )
-                .join(" · ");
-        }
-    }
-
-    /* ==========================================
-       RESULTADO DEMONSTRATIVO
-    ========================================== */
-
-    function generateScenario() {
-        const scenarioName = $("#scenarioName");
-
-        if (!scenarioName) {
-            showToast("Não foi encontrado o espaço do resultado no HTML.");
-            return;
-        }
-
-        const scenarios = [
-            "PLAYER E TIER",
-            "BANKER E TIER",
-            "BANKER",
-            "PLAYER"
-        ];
-
-        const index = Math.floor(
-            Math.random() * scenarios.length
-        );
-
-        scenarioName.textContent = scenarios[index];
-    }
-
-    /* ==========================================
-       CONTROLE DOS BOTÕES
-    ========================================== */
-
-    function setButtonsState(disabled) {
-        if (analyzeBtn) {
-            analyzeBtn.disabled = disabled;
-
-            analyzeBtn.innerHTML = disabled
-                ? "AGUARDE..."
-                : 'ANALISAR CENÁRIO <span>→</span>';
-        }
-
-        if (doublesBtn) {
-            doublesBtn.disabled = disabled;
-
-            doublesBtn.innerHTML = disabled
-                ? "AGUARDE..."
-                : 'ANALISAR DUPLOS <span>→</span>';
-        }
-    }
-
-    /* ==========================================
-       INTERVALO DE 40 SEGUNDOS
-    ========================================== */
-
-    function startCooldown() {
-        cooldownEnd = Date.now() + COOLDOWN_DURATION * 1000;
-
-        setButtonsState(true);
-
-        clearInterval(cooldownInterval);
-
-        function updateCooldown() {
-            const remaining = Math.max(
-                0,
-                Math.ceil((cooldownEnd - Date.now()) / 1000)
-            );
-
-            const minutes = String(
-                Math.floor(remaining / 60)
-            ).padStart(2, "0");
-
-            const seconds = String(
-                remaining % 60
-            ).padStart(2, "0");
-
-            if (timerValue) {
-                timerValue.textContent = `${minutes}:${seconds}`;
-            }
-
-            if (timerProgress) {
-                const percentage =
-                    (remaining / COOLDOWN_DURATION) * 100;
-
-                timerProgress.style.width = `${percentage}%`;
-            }
-
-            if (remaining > 0) {
-                if (timerMessage) {
-                    timerMessage.textContent =
-                        "Sistema em período de intervalo.";
-                }
-            } else {
-                clearInterval(cooldownInterval);
-
-                cooldownEnd = 0;
-
-                if (timerValue) {
-                    timerValue.textContent = "00:00";
-                }
-
-                if (timerProgress) {
-                    timerProgress.style.width = "0%";
-                }
-
-                if (timerMessage) {
-                    timerMessage.textContent =
-                        "Sistema disponível para novas simulações.";
-                }
-
-                setButtonsState(false);
-            }
-        }
-
-        updateCooldown();
-
-        cooldownInterval = setInterval(
-            updateCooldown,
-            250
-        );
-    }
-
-    /* ==========================================
-       PROCESSAMENTO DE 10 SEGUNDOS
-    ========================================== */
-
-    function startAnalysis(type) {
-        if (analysisRunning || Date.now() < cooldownEnd) {
-            showToast("Aguarde a liberação do sistema.");
-            return;
-        }
-
-        analysisRunning = true;
-
-        if (scenarioResult) {
-            scenarioResult.classList.add("hidden");
-        }
-
-        if (diceResult) {
-            diceResult.classList.add("hidden");
-        }
-
-        if (processingPanel) {
-            processingPanel.classList.remove("hidden");
-        }
-
-        if (processingTitle) {
-            processingTitle.textContent =
-                type === "scenario"
-                    ? "Central de simulação"
-                    : "Distribuição matemática";
-        }
-
-        const messages = [
-    "Estabelecendo conexão com a base de dados...",
-    "Processando registros históricos e frequências...",
-    "Identificando padrões e recorrências estatísticas...",
-    "Executando análise com inteligência artificial integrada...",
-    "Consolidando indicadores e finalizando a análise..."
+const $ = selector => document.querySelector(selector);
+
+const CONFIG = {
+    colorAnalysis: 10000,
+    colorCooldown: 40000,
+    doubleAnalysis: 15000,
+    doubleCooldown: 30000
+};
+
+const colorEntries = [
+    "PLAYER OU EMPATE",
+    "BANKER OU EMPATE",
+    "PLAYER",
+    "BANKER"
 ];
 
-        if (processingProgress) {
-            processingProgress.style.width = "0%";
-        }
+const state = {
+    colors: {
+        running: false,
+        blockedUntil: 0,
+        timer: null
+    },
+    doubles: {
+        running: false,
+        blockedUntil: 0,
+        timer: null
+    },
+    sound: false,
+    audio: null,
+    history: JSON.parse(localStorage.getItem("megaHistory") || "[]"),
+    timeResults: {}
+};
 
-        if (analysisCountdown) {
-            analysisCountdown.textContent = "10s";
-        }
+/* SOM */
 
-        const startTime = Date.now();
+function playSound(frequency = 600) {
+    if (!state.sound) return;
 
-        startCooldown();
+    try {
+        state.audio ||= new AudioContext();
 
-        clearInterval(analysisInterval);
+        const oscillator = state.audio.createOscillator();
+        const gain = state.audio.createGain();
 
-        function updateAnalysis() {
-            const elapsed =
-                (Date.now() - startTime) / 1000;
+        oscillator.frequency.value = frequency;
+        gain.gain.value = 0.05;
 
-            const progress = Math.min(
-                100,
-                (elapsed / ANALYSIS_DURATION) * 100
-            );
+        oscillator.connect(gain);
+        gain.connect(state.audio.destination);
 
-            const remaining = Math.max(
-                0,
-                Math.ceil(ANALYSIS_DURATION - elapsed)
-            );
+        oscillator.start();
+        oscillator.stop(state.audio.currentTime + 0.12);
+    } catch (error) {
+        console.warn("Áudio indisponível.");
+    }
+}
 
-            if (processingProgress) {
-                processingProgress.style.width =
-                    `${progress}%`;
-            }
+/* HISTÓRICO */
 
-            if (analysisCountdown) {
-                analysisCountdown.textContent =
-                    `${remaining}s`;
-            }
+function saveHistory(type, result) {
+    const item = {
+        type,
+        result,
+        date: new Date().toLocaleString("pt-BR")
+    };
 
-            const messageIndex = Math.min(
-                messages.length - 1,
-                Math.floor(elapsed / 2.5)
-            );
+    state.history.unshift(item);
+    state.history = state.history.slice(0, 40);
 
-            if (processingMessage) {
-                processingMessage.textContent =
-                    messages[messageIndex];
-            }
+    localStorage.setItem("megaHistory", JSON.stringify(state.history));
 
-            if (elapsed >= ANALYSIS_DURATION) {
-                clearInterval(analysisInterval);
-                analysisInterval = null;
+    renderHistory();
+}
 
-                finishAnalysis(type);
-            }
-        }
 
-        updateAnalysis();
+function renderHistory() {
+    const container = $("#historyList");
 
-        analysisInterval = setInterval(
-            updateAnalysis,
-            100
-        );
+    if (!state.history.length) {
+        container.textContent = "Nenhum registro disponível.";
+        return;
     }
 
-    /* ==========================================
-       FINALIZAÇÃO
-    ========================================== */
+    container.innerHTML = state.history.map(item => {
+        const result = String(item.result || "").toUpperCase();
 
-    function finishAnalysis(type) {
-        analysisRunning = false;
+        const isGreen = result.includes("GREEN");
+        const isRed = result.includes("RED");
 
-        if (processingPanel) {
-            processingPanel.classList.add("hidden");
+        let statusClass = "";
+
+        if (isGreen) {
+            statusClass = "history-green";
+        } else if (isRed) {
+            statusClass = "history-red";
         }
 
-        if (type === "scenario") {
-            generateScenario();
+        return `
+            <div class="history-item ${statusClass}">
+                <div class="history-info">
+                    <strong>${escapeHTML(item.type)}</strong>
+                    <div class="history-date">
+                        ${escapeHTML(item.date)}
+                    </div>
+                </div>
 
-            if (scenarioResult) {
-                scenarioResult.classList.remove("hidden");
+                <strong class="history-result">
+                    ${escapeHTML(item.result)}
+                </strong>
+            </div>
+        `;
+    }).join("");
+}
 
-                scenarioResult.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-            }
-        } else {
-            generateDiceAnalysis();
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
 
-            if (diceResult) {
-                diceResult.classList.remove("hidden");
+/* TEMPORIZADORES INDEPENDENTES */
 
-                diceResult.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
-            }
-        }
+function runAnalysis(config) {
+    const { key, duration, cooldown, button, status, progress, countdown, callback } = config;
 
-        showToast("Simulação concluída.");
-    }
+    const system = state[key];
 
-    /* ==========================================
-       EVENTOS DOS BOTÕES
-    ========================================== */
+    if (system.running || Date.now() < system.blockedUntil) return;
 
-    if (analyzeBtn) {
-        analyzeBtn.addEventListener("click", () => {
-            startAnalysis("scenario");
-        });
-    } else {
-        console.error("Elemento #analyzeBtn não encontrado no HTML.");
-    }
+    system.running = true;
+    button.disabled = true;
 
-    if (doublesBtn) {
-        doublesBtn.addEventListener("click", () => {
-            startAnalysis("dice");
-        });
-    } else {
-        console.error("Elemento #doublesBtn não encontrado no HTML.");
-    }
+    const started = Date.now();
+    const ends = started + duration;
 
-    /* ==========================================
-       PLATAFORMA EXTERNA
-    ========================================== */
+    status.textContent = "Processamento em andamento...";
+    progress.style.width = "0%";
 
-    const loadPlatform = $("#loadPlatform");
+    playSound(500);
 
-    if (loadPlatform) {
-        loadPlatform.addEventListener("click", () => {
-            const input = $("#platformUrl");
+    clearInterval(system.timer);
 
-            if (!input) return;
+    system.timer = setInterval(() => {
+        const remaining = Math.max(0, ends - Date.now());
+        const percent = Math.min(100, ((duration - remaining) / duration) * 100);
 
-            const rawUrl = input.value.trim();
+        progress.style.width = percent + "%";
+        status.textContent = `Analisando... ${Math.ceil(remaining / 1000)}s`;
 
-            if (!rawUrl) {
-                showToast("Informe o endereço da plataforma.");
-                input.focus();
-                return;
-            }
+        if (remaining <= 0) {
+            clearInterval(system.timer);
 
-            let url;
+            callback();
 
-            try {
-                url = new URL(rawUrl);
-            } catch {
-                showToast("Informe uma URL válida.");
-                input.focus();
-                return;
-            }
+            system.running = false;
+            system.blockedUntil = Date.now() + cooldown;
 
-            if (
-                !["http:", "https:"].includes(url.protocol) ||
-                !url.hostname ||
-                url.username ||
-                url.password
-            ) {
-                showToast("Endereço não permitido.");
-                return;
-            }
+            playSound(850);
 
-            const iframe = $("#platformFrame");
-            const iframeAddress = $("#iframeAddress");
-            const iframeContainer = $("#iframeContainer");
-
-            if (!iframe || !iframeContainer) {
-                showToast("Área da plataforma não encontrada.");
-                return;
-            }
-
-            iframe.src = url.href;
-
-            if (iframeAddress) {
-                iframeAddress.textContent =
-                    url.hostname.toUpperCase();
-            }
-
-            iframeContainer.classList.remove("hidden");
-
-            iframeContainer.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+            startCooldown({
+                system,
+                button,
+                countdown,
+                status,
+                progress
             });
+        }
+    }, 100);
+}
+
+function startCooldown({ system, button, countdown, status, progress }) {
+    const update = () => {
+        const remaining = Math.max(0, system.blockedUntil - Date.now());
+
+        if (remaining <= 0) {
+            clearInterval(system.cooldownTimer);
+            system.cooldownTimer = null;
+            button.disabled = false;
+            countdown.textContent = "";
+            status.textContent = "Sistema disponível";
+            progress.style.width = "0%";
+            playSound(700);
+            return;
+        }
+
+        button.disabled = true;
+        countdown.textContent = `NOVAMENTE EM ${Math.ceil(remaining / 1000)} SEGUNDOS`;
+    };
+
+    update();
+
+    clearInterval(system.cooldownTimer);
+    system.cooldownTimer = setInterval(update, 200);
+}
+
+/* ANÁLISE DE CORES */
+
+$("#colorButton").addEventListener("click", () => {
+    runAnalysis({
+        key: "colors",
+        duration: CONFIG.colorAnalysis,
+        cooldown: CONFIG.colorCooldown,
+        button: $("#colorButton"),
+        status: $("#colorStatus"),
+        progress: $("#colorProgress"),
+        countdown: $("#colorCountdown"),
+
+        callback: () => {
+            const entry = colorEntries[
+                Math.floor(Math.random() * colorEntries.length)
+            ];
+
+            const percentage = Math.floor(Math.random() * 18) + 80;
+
+            $("#colorResult").textContent = entry;
+            $("#colorPercentage").textContent = percentage + "%";
+
+            saveHistory("CORES", entry);
+            $("#colorStatus").textContent = "Análise concluída";
+        }
+    });
+});
+
+/* DADOS TRADICIONAIS */
+
+const dicePatterns = {
+    1: [0, 0, 0, 0, 1, 0, 0, 0, 0],
+    2: [1, 0, 0, 0, 0, 0, 0, 0, 1],
+    3: [1, 0, 0, 0, 1, 0, 0, 0, 1],
+    4: [1, 0, 1, 0, 0, 0, 1, 0, 1],
+    5: [1, 0, 1, 0, 1, 0, 1, 0, 1],
+    6: [1, 0, 1, 1, 0, 1, 1, 0, 1]
+};
+
+function renderDice() {
+    document.querySelectorAll(".die").forEach(die => {
+        const number = Number(die.dataset.number);
+
+        die.innerHTML = `
+            <div class="dots">
+                ${dicePatterns[number].map(value =>
+                    `<span class="pip ${value ? "" : "empty"}"></span>`
+                ).join("")}
+            </div>
+        `;
+    });
+}
+
+/* PORCENTAGENS EXATAS EM 100% */
+
+function generatePercentages() {
+    const values = Array.from({ length: 6 }, () =>
+        Math.floor(Math.random() * 100) + 1
+    );
+
+    const total = values.reduce((sum, value) => sum + value, 0);
+
+    const percentages = values.map(value =>
+        Math.round(value / total * 10000) / 100
+    );
+
+    const difference = 10000 -
+        percentages.reduce((sum, value) => sum + Math.round(value * 100), 0);
+
+    percentages[0] += difference / 100;
+
+    return percentages;
+}
+
+/* ANÁLISE DE DUPLOS */
+
+/* ==========================================
+   ANÁLISE DE DUPLOS
+========================================== */
+
+$("#doubleButton").addEventListener("click", () => {
+
+    runAnalysis({
+        key: "doubles",
+        duration: CONFIG.doubleAnalysis,
+        cooldown: CONFIG.doubleCooldown,
+        button: $("#doubleButton"),
+        status: $("#doubleStatus"),
+        progress: $("#doubleProgress"),
+        countdown: $("#doubleCountdown"),
+
+        callback: () => {
+
+            // GERAR PORCENTAGENS
+            const percentages = generatePercentages();
+
+            // ORGANIZAR OS SEIS DADOS
+            const ranking = percentages
+                .map((percentage, index) => ({
+                    number: index + 1,
+                    percentage
+                }))
+                .sort((a, b) => b.percentage - a.percentage);
+
+            // REMOVER DESTAQUES ANTERIORES
+            document.querySelectorAll(".die").forEach(die => {
+                die.classList.remove("selected");
+            });
+
+            // DESTACAR OS TRÊS MELHORES DADOS
+            ranking.slice(0, 3).forEach(item => {
+
+                const die = document.querySelector(
+                    `.die[data-number="${item.number}"]`
+                );
+
+                if (die) {
+                    die.classList.add("selected");
+                }
+
+            });
+
+            // EXIBIR OS TRÊS MELHORES RESULTADOS
+            $("#doubleResult").innerHTML = ranking
+                .slice(0, 3)
+                .map((item, index) => `
+                    <div class="ranking-item ${index === 0 ? "best" : ""}">
+
+                        <span>
+                            ${index + 1}º LUGAR — DADO ${item.number}
+                        </span>
+
+                        <strong>
+                            ${item.percentage.toFixed(2)}%
+                        </strong>
+
+                    </div>
+                `)
+                .join("");
+
+            // SALVAR NO HISTÓRICO
+            saveHistory(
+                "DUPLOS",
+                ranking
+                    .slice(0, 3)
+                    .map(item => item.number)
+                    .join(" / ")
+            );
+
+            // FINALIZAR ANÁLISE
+            $("#doubleStatus").textContent =
+                "Distribuição percentual concluída";
+
+        }
+
+    });
+
+});
+
+/* HORÁRIOS FUTUROS */
+
+function updateTimes() {
+    const now = new Date();
+
+    $("#clock").textContent = now.toLocaleTimeString("pt-BR");
+
+    const next = new Date(now);
+    next.setSeconds(0, 0);
+
+    const remainder = next.getMinutes() % 2;
+
+    if (remainder !== 0 || next <= now) {
+        next.setMinutes(next.getMinutes() + (remainder === 0 ? 2 : 1));
+    }
+
+    const times = [];
+
+    for (let i = 0; i < 5; i++) {
+        const time = new Date(next.getTime() + i * 2 * 60000);
+        const key = time.toISOString();
+
+        times.push({
+            time,
+            key,
+            result: state.timeResults[key] || "QUENTE!"
         });
     }
 
-    const closePlatform = $("#closePlatform");
+    $("#timeList").innerHTML = times.map((item, index) => {
+        const hot = index < 2;
 
-    if (closePlatform) {
-        closePlatform.addEventListener("click", () => {
-            const iframe = $("#platformFrame");
-            const iframeContainer = $("#iframeContainer");
-            const input = $("#platformUrl");
+        return `
+            <div class="time-item ${hot ? "hot" : ""}">
+                <span class="time-rank">${index + 1}º</span>
+                <strong>${item.time.toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}</strong>
+                <span>${hot ? "HORÁRIO DESTACADO" : "MONITORAMENTO"}</span>
+                <span class="time-status ${
+                    item.result === "GREEN" ? "green" :
+                    item.result === "RED" ? "red" : "waiting"
+                }">${item.result}</span>
+            </div>
+        `;
+    }).join("");
+}
 
-            if (iframe) {
-                iframe.src = "about:blank";
-            }
+/* RESULTADOS DE HORÁRIOS */
 
-            if (iframeContainer) {
-                iframeContainer.classList.add("hidden");
-            }
+function processTimes() {
+    const now = Date.now();
 
-            if (input) {
-                input.value = "";
-            }
+    const next = new Date();
+    next.setSeconds(0, 0);
 
-            showToast("Visualização encerrada.");
-        });
+    const remainder = next.getMinutes() % 2;
+
+    if (remainder !== 0 || next <= new Date()) {
+        next.setMinutes(next.getMinutes() + (remainder === 0 ? 2 : 1));
     }
 
-    /* ==========================================
-       INICIALIZAÇÃO
-    ========================================== */
+    for (let i = 0; i < 5; i++) {
+        const time = new Date(next.getTime() + i * 2 * 60000);
+        const key = time.toISOString();
 
-    function initialize() {
-        if (processingPanel) {
-            processingPanel.classList.add("hidden");
+        if (now >= time.getTime() && !state.timeResults[key]) {
+            state.timeResults[key] = "QUENTE";
         }
-
-        if (scenarioResult) {
-            scenarioResult.classList.add("hidden");
-        }
-
-        if (diceResult) {
-            diceResult.classList.add("hidden");
-        }
-
-        updateClock();
-
-        setInterval(updateClock, 1000);
-
-        updateSchedule();
-
-        if (timerValue) {
-            timerValue.textContent = "00:40";
-        }
-
-        if (timerProgress) {
-            timerProgress.style.width = "100%";
-        }
-
-        if (timerMessage) {
-            timerMessage.textContent =
-                "Sistema disponível para novas simulações.";
-        }
-
-        setButtonsState(false);
     }
 
-    initialize();
+    updateTimes();
+}
 
+/* IFRAME */
+
+$("#toggleGame").addEventListener("click", () => {
+    const card = $("#gameCard");
+    card.classList.toggle("expanded");
+
+    $("#toggleGame").textContent =
+        card.classList.contains("expanded") ? "Recolher" : "Expandir";
+});
+
+/* CONFIGURAÇÕES */
+
+function loadSettings() {
+    const theme = localStorage.getItem("megaTheme") || "dark";
+    const sound = localStorage.getItem("megaSound") === "true";
+    const iframe = localStorage.getItem("megaIframe") || "";
+
+    document.body.classList.toggle("light", theme === "light");
+
+    $("#themeToggle").checked = theme === "dark";
+    $("#soundToggle").checked = sound;
+    $("#iframeUrl").value = iframe;
+
+    state.sound = sound;
+
+    if (iframe) {
+        loadIframe(iframe);
+    }
+}
+
+function loadIframe(url) {
+    try {
+        const parsed = new URL(url);
+
+        if (!["http:", "https:"].includes(parsed.protocol)) {
+            throw new Error("Endereço inválido");
+        }
+
+        $("#gameFrame").src = parsed.href;
+        $("#gameCard").classList.add("has-frame");
+    } catch {
+        alert("Informe um endereço HTTP ou HTTPS válido.");
+    }
+}
+
+$("#saveSettings").addEventListener("click", () => {
+    const theme = $("#themeToggle").checked ? "dark" : "light";
+    const sound = $("#soundToggle").checked;
+    const iframe = $("#iframeUrl").value.trim();
+
+    localStorage.setItem("megaTheme", theme);
+    localStorage.setItem("megaSound", sound);
+    localStorage.setItem("megaIframe", iframe);
+
+    document.body.classList.toggle("light", theme === "light");
+
+    state.sound = sound;
+
+    if (iframe) {
+        loadIframe(iframe);
+    }
+
+    playSound(750);
+});
+
+$("#settingsButton").addEventListener("click", () => {
+    $("#configuracoes").scrollIntoView({ behavior: "smooth" });
+});
+
+/* LIMPAR HISTÓRICO */
+
+$("#clearHistory").addEventListener("click", () => {
+    if (!confirm("Deseja limpar todo o histórico?")) return;
+
+    state.history = [];
+
+    localStorage.removeItem("megaHistory");
+
+    renderHistory();
+});
+
+/* INICIALIZAÇÃO */
+
+renderDice();
+renderHistory();
+loadSettings();
+processTimes();
+
+setInterval(processTimes, 1000);
+
+/* ==========================================
+   REGISTRO MANUAL GREEN E RED
+========================================== */
+
+function registerManualResult(type, result) {
+
+    const name = type === "CORES"
+        ? $("#colorResult").textContent
+        : $("#doubleResult").innerText
+            .replace(/\s+/g, " ")
+            .trim();
+
+    if (
+        !name ||
+        name === "AGUARDANDO" ||
+        name === "Aguardando análise"
+    ) {
+        alert("Realize uma análise antes de registrar o resultado.");
+        return;
+    }
+
+    saveHistory(
+        type,
+        `${result} - ${name}`
+    );
+
+    playSound(result === "GREEN" ? 850 : 350);
+}
+
+/* BOTÕES DA ANÁLISE DE CORES */
+
+$("#colorGreen").addEventListener("click", () => {
+    registerManualResult("CORES", "GREEN");
+});
+
+$("#colorRed").addEventListener("click", () => {
+    registerManualResult("CORES", "RED");
+});
+
+/* BOTÕES DA ANÁLISE DE DUPLOS */
+
+$("#doubleGreen").addEventListener("click", () => {
+    registerManualResult("DUPLOS", "GREEN");
+});
+
+$("#doubleRed").addEventListener("click", () => {
+    registerManualResult("DUPLOS", "RED");
 });
