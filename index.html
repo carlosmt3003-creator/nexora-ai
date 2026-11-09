@@ -4,367 +4,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#070b14">
-    <title>AI Analyzer | Premium</title>
-
+    <meta name="theme-color" content="#07111f">
+    <title>MEGA SIC BAC</title>
     <link rel="stylesheet" href="style.css">
-
-    <!-- Ícones oficiais via Simple Icons CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/index.min.js"
-            defer></script>
-    <script src="script.js" defer></script>
 </head>
-
 <body>
-    <main class="app">
 
-        <header class="topbar">
-            <a class="brand" href="#">
-                <span class="brand-icon">AI</span>
-                <span>AI<span class="brand-highlight"> ANALYZER</span></span>
-            </a>
+<div class="app">
 
-            <div class="system-status">
-                <span class="status-light"></span>
-                SISTEMA ONLINE
-            </div>
-        </header>
-
-        <section class="analyzer-panel" id="analyzerPanel">
-
-            <div class="panel-heading">
-                <span class="eyebrow">ARTIFICIAL INTELLIGENCE SYSTEM</span>
-                <h1>Central de <span>Inteligência</span></h1>
-                <p>Ambiente de análise estatística e correlação de padrões.</p>
-            </div>
-
-            <!-- ROBÔ E INTEGRAÇÕES -->
-            <div class="ai-stage">
-
-                <div class="orbit orbit-one"></div>
-                <div class="orbit orbit-two"></div>
-
-               <svg class="connection-lines"
-     viewBox="0 0 600 340"
-     preserveAspectRatio="none"
-     aria-hidden="true">
-
-    <!-- Claude: lado esquerdo superior -->
-    <path d="M95 100 L245 155"
-          class="connection connection-blue"/>
-
-    <!-- Gemini: lado esquerdo inferior -->
-    <path d="M95 210 L245 185"
-          class="connection connection-purple"/>
-
-    <!-- ChatGPT: lado direito -->
-    <path d="M505 100 L395 160"
-          class="connection connection-green"/>
-
-</svg>
-
-                <div class="ai-node node-claude">
-                    <div class="ai-logo claude-logo">C</div>
-                    <span>CLAUDE</span>
-                    <small><i></i> Conectado</small>
-                </div>
-
-                <div class="ai-node node-gemini">
-                    <div class="ai-logo gemini-logo">✳</div>
-                    <span>GEMINI</span>
-                    <small><i></i> Conectado</small>
-                </div>
-
-                <div class="ai-node node-chatgpt">
-                    <div class="ai-logo chatgpt-logo">
-                        <svg viewBox="0 0 40 40" aria-label="Símbolo do ChatGPT">
-                            <path d="M20 5a9 9 0 0 1 8 5l3 1a8 8 0 0 1 3 12l-1 3a8 8 0 0 1-10 8l-3 1a8 8 0 0 1-12-6l-2-2a8 8 0 0 1 1-12l1-3a8 8 0 0 1 9-5z"
-                                  fill="none" stroke="currentColor"
-                                  stroke-width="2.5" stroke-linejoin="round"/>
-                            <path d="M13 12l14 8-1 12M8 17l14-8M9 28l14-8 9 5M20 5l1 15-9 8M34 19l-13 8"
-                                  fill="none" stroke="currentColor"
-                                  stroke-width="2.5" stroke-linecap="round"/>
-                        </svg>
-                    </div>
-                    <span>CHATGPT</span>
-                    <small><i></i> Conectado</small>
-                </div>
-
-                <div class="robot-container">
-                    <div class="robot-halo"></div>
-
-                    <div class="robot">
-                        <div class="robot-ear ear-left"></div>
-                        <div class="robot-ear ear-right"></div>
-                        <div class="robot-head">
-                            <div class="robot-forehead"></div>
-                            <div class="robot-face">
-                                <span class="robot-eye"></span>
-                                <span class="robot-eye"></span>
-                            </div>
-                            <div class="robot-mouth"></div>
-                        </div>
-                        <div class="robot-neck"></div>
-                        <div class="robot-body">
-                            <div class="robot-core"></div>
-                            <span class="robot-detail detail-left"></span>
-                            <span class="robot-detail detail-right"></span>
-                        </div>
-                    </div>
-
-                    <div class="robot-caption">
-                        <span class="status-light"></span>
-                        NÚCLEO DE INTELIGÊNCIA ATIVO
-                    </div>
-                </div>
-            </div>
-
-            <div class="integration-bar">
-                <div>
-                    <span class="status-light"></span>
-                    <strong>INTEGRAÇÃO DO PAINEL</strong>
-                </div>
-                <span class="integration-label">INTERFACE ONLINE</span>
-            </div>
-
-            <!-- ANÁLISE -->
-            <section class="analysis-section">
-                <div class="section-title">
-                    <span class="section-number">01</span>
-                    <div>
-                        <h2>Análise de entrada</h2>
-                        <p>Processamento demonstrativo em quatro etapas.</p>
-                    </div>
-                </div>
-
-                <button id="analyzeBtn" class="analyze-button">
-                    <span class="button-icon">✦</span>
-                    <span id="buttonText">ANALISAR MELHOR ENTRADA</span>
-                    <span class="button-arrow">↗</span>
-                </button>
-
-                <div class="analysis-progress" id="analysisProgress" hidden>
-                    <div class="progress-top">
-                        <span id="analysisState">AGUARDANDO PROCESSAMENTO</span>
-                        <strong id="progressPercent">0%</strong>
-                    </div>
-                    <div class="progress-track">
-                        <div class="progress-fill" id="totalProgress"></div>
-                    </div>
-
-                    <div class="steps-list">
-                        <div class="analysis-step" data-step="0">
-                            <div class="step-symbol">01</div>
-                            <div class="step-content">
-                                <p>ESTABELECENDO CONEXÃO E VALIDANDO A INTEGRIDADE DA API</p>
-                                <div class="step-track">
-                                    <div class="step-fill"></div>
-                                </div>
-                            </div>
-                            <span class="step-percent">0%</span>
-                        </div>
-
-                        <div class="analysis-step" data-step="1">
-                            <div class="step-symbol">02</div>
-                            <div class="step-content">
-                                <p>PROCESSANDO O HISTÓRICO DAS 120 RODADAS MAIS RECENTES</p>
-                                <div class="step-track">
-                                    <div class="step-fill"></div>
-                                </div>
-                            </div>
-                            <span class="step-percent">0%</span>
-                        </div>
-
-                        <div class="analysis-step" data-step="2">
-                            <div class="step-symbol">03</div>
-                            <div class="step-content">
-                                <p>EXECUTANDO A DETECÇÃO E A CORRELAÇÃO DE PADRÕES ESTATÍSTICOS</p>
-                                <div class="step-track">
-                                    <div class="step-fill"></div>
-                                </div>
-                            </div>
-                            <span class="step-percent">0%</span>
-                        </div>
-
-                        <div class="analysis-step" data-step="3">
-                            <div class="step-symbol">04</div>
-                            <div class="step-content">
-                                <p>PROCESSAMENTO FINALIZADO COM SUCESSO</p>
-                                <div class="step-track">
-                                    <div class="step-fill"></div>
-                                </div>
-                            </div>
-                            <span class="step-percent">0%</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- COFRE DE PROBABILIDADES -->
-            <section class="vault-section" id="vaultSection" hidden>
-                <div class="section-title">
-                    <span class="section-number">02</span>
-                    <div>
-                        <h2>Distribuição estatística</h2>
-                        <p>Distribuição ilustrativa das três entradas.</p>
-                    </div>
-                </div>
-
-                <div class="vault">
-                    <div class="vault-top">
-                        <span>PROBABILITY VAULT</span>
-                        <span class="vault-live"><i></i> RESULTADO GERADO</span>
-                    </div>
-
-                    <div class="vault-grid">
-                        <div class="vault-item blue-vault" id="blueVault">
-                            <div class="liquid-container">
-                                <div class="liquid"></div>
-                                <div class="liquid-wave"></div>
-                                <span class="vault-percent" id="bluePercent">0%</span>
-                            </div>
-                            <strong>PLAYER</strong>
-                            <small>ENTRADA AZUL</small>
-                        </div>
-
-                        <div class="vault-item green-vault" id="greenVault">
-                            <div class="liquid-container">
-                                <div class="liquid"></div>
-                                <div class="liquid-wave"></div>
-                                <span class="vault-percent" id="greenPercent">0%</span>
-                            </div>
-                            <strong>EMPATE</strong>
-                            <small>ENTRADA VERDE</small>
-                        </div>
-
-                        <div class="vault-item red-vault" id="redVault">
-                            <div class="liquid-container">
-                                <div class="liquid"></div>
-                                <div class="liquid-wave"></div>
-                                <span class="vault-percent" id="redPercent">0%</span>
-                            </div>
-                            <strong>BANKER</strong>
-                            <small>ENTRADA VERMELHA</small>
-                        </div>
-                    </div>
-
-                    <div class="vault-footer">
-                        <span>MODELO DEMONSTRATIVO</span>
-                        <span id="sumPercent">TOTAL: 100%</span>
-                    </div>
-                </div>
-
-                <div class="premium-result" id="premiumResult">
-                    <div class="premium-heading">
-                        <span class="premium-star">✦</span>
-                        <div>
-                            <span class="eyebrow">ANÁLISE CONCLUÍDA</span>
-                            <h2>RESULTADO DA ANÁLISE PREMIUM</h2>
-                        </div>
-                    </div>
-
-                    <div class="result-choice" id="resultChoice">
-                        <span class="result-label">ENTRADA INDICADA NO MODELO</span>
-                        <strong id="resultName">AGUARDANDO</strong>
-                        <span id="resultValue">--%</span>
-                    </div>
-
-                    <div class="protection-note">
-                        <span class="protection-icon">◈</span>
-                        <div>
-                            <strong>ATÉ G1 — PROTEÇÃO NO EMPATE</strong>
-                            <p>Indicação demonstrativa; não representa garantia de resultado.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <footer class="panel-footer">
-                <span>AI ANALYZER <b>•</b> PREMIUM INTERFACE</span>
-                <span>DEMONSTRAÇÃO LOCAL</span>
-            </footer>
-        </section>
-
-        <!-- CONTADORES -->
-        <section class="score-panel">
-            <div class="score-heading">
-                <span class="eyebrow">ACOMPANHAMENTO</span>
-                <h2>Controle de resultados</h2>
-            </div>
-
-            <div class="score-buttons">
-                <button id="greenBtn" class="score-button green-score">
-                    <span class="score-dot"></span>
-                    <span class="score-label">GREEN</span>
-                    <strong id="greenCount">0</strong>
-                    <span class="score-plus">+1</span>
-                </button>
-
-                <button id="redBtn" class="score-button red-score">
-                    <span class="score-dot"></span>
-                    <span class="score-label">RED</span>
-                    <strong id="redCount">0</strong>
-                    <span class="score-plus">+1</span>
-                </button>
-            </div>
-
-            <p class="score-disclaimer">
-                Contadores manuais de acompanhamento. Os dados são mantidos nesta sessão.
-            </p>
-        </section>
-
-        <div class="feedback-overlay" id="feedbackOverlay" aria-live="polite">
-            <div class="feedback-content">
-                <span id="feedbackSymbol">✓</span>
-                <strong id="feedbackTitle">GREEN!</strong>
-                <p id="feedbackMessage">Registro atualizado.</p>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">H</div>
+            <div>
+                <h1>MEGA <span>SIC BAC</span></h1>
+                <small>INTELLIGENCE DASHBOARD</small>
             </div>
         </div>
 
-        <audio id="analysisSound" preload="auto"></audio>
+        <div class="system-status">
+            <span class="status-dot"></span>
+            SISTEMA ONLINE
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+            <div>
+                <span class="eyebrow">CENTRAL DE INTELIGÊNCIA</span>
+                <h2>Painel de <span>Inteligência Analítica</span></h2>
+<p>Central de análise estatística com indicadores, métricas e projeções baseadas nos dados disponíveis.</p>
+            </div>
+
+            <div class="clock-card">
+                <small>HORÁRIO LOCAL</small>
+                <strong id="clock">00:00:00</strong>
+                <span id="date">Carregando...</span>
+            </div>
+        </section>
+
+        <section class="analysis-grid">
+
+            <article class="analysis-card blue-card">
+                <div class="card-icon">✦</div>
+                <span class="card-label">ENTRADA NAS CORES</span>
+         <h3>TECNOLOGIA DE ANÁLISE INTELIGENTE</h3>
+                
+
+                <div class="card-bottom">
+                    <span class="availability">
+                        <span class="status-dot"></span>
+                        DISPONÍVEL
+                    </span>
+                    <button id="analyzeBtn" class="primary-btn">
+                        IA PREMIUN <span>→</span>
+                    </button>
+                </div>
+            </article>
+
+            <article class="analysis-card purple-card">
+                <div class="card-icon">◈</div>
+                <span class="card-label">ENTRADA NOS DUPLOS</span>
+                <h3><h3>SISTEMA AVANÇADO DE INTELIGÊNCIA ANALÍTICA</h3></h3>
+               <p>Análise estatística das seis faces do dado, com indicadores de frequência e distribuição histórica dos resultados registrados.</p>
+
+                <div class="card-bottom">
+                    <span class="availability">
+                        <span class="status-dot"></span>
+                        DISPONÍVEL
+                    </span>
+                    <button id="doublesBtn" class="primary-btn purple-btn">
+                        ANALISAR DUPLOS <span>→</span>
+                    </button>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="timer-panel">
+            <div class="timer-info">
+                <div class="timer-icon">◷</div>
+                <div>
+                    <strong>Tempo de processamento e identificação de padrões</strong>
+
+                </div>
+            </div>
+
+            <div class="timer-value" id="timerValue">00:40</div>
+
+            <div class="timer-track">
+                <div id="timerProgress"></div>
+            </div>
+        </section>
+
+        <section class="processing-panel hidden" id="processingPanel">
+            <div class="processing-header">
+                <div>
+                    <span class="eyebrow">PROCESSAMENTO LOCAL</span>
+                    <h3 id="processingTitle">Central de simulação</h3>
+                </div>
+                <strong id="analysisCountdown">10s</strong>
+            </div>
+
+            <div class="ai-network">
+                <div class="ai-node">
+                    <div class="ai-symbol">C</div>
+                    <strong>ChatGPT</strong>
+                    <small>IDENTIDADE VISUAL</small>
+                </div>
+
+                <div class="network-line"></div>
+
+                <div class="ai-node">
+                    <div class="ai-symbol gemini-symbol">✧</div>
+                    <strong>Gemini</strong>
+                    <small>IDENTIDADE VISUAL</small>
+                </div>
+
+                <div class="network-line"></div>
+
+                <div class="ai-node">
+                    <div class="ai-symbol claude-symbol">A</div>
+                    <strong>Claude</strong>
+                    <small>IDENTIDADE VISUAL</small>
+                </div>
+            </div>
+
+            <p class="processing-message" id="processingMessage">
+                Inicializando simulação local...
+            </p>
+
+            <div class="processing-track">
+                <div id="processingProgress"></div>
+            </div>
+
+            <small class="simulation-note">
+Análises inteligentes realizadas por IA integrada, com processamento de dados e identificação de padrões estatísticos.
+            </small>
+        </section>
+
+        <section class="result-panel hidden" id="scenarioResult">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">RESULTADO DEMONSTRATIVO</span>
+                    <h3>Cenário gerado</h3>
+                </div>
+                <span class="simulation-tag">SIMULAÇÃO</span>
+            </div>
+
+            <div class="scenario-result">
+                <span>CENÁRIO ILUSTRATIVO</span>
+                <strong id="scenarioName">CENÁRIO A</strong>
+<p>Análise estatística com inteligência artificial, baseada no processamento de dados e na identificação de padrões históricos.</p>
+            </div>
+        </section>
+
+        <section class="result-panel hidden" id="diceResult">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">ANÁLISE MATEMÁTICA</span>
+                    <h3>TOP 3 INDICADORES ESTATÍSTICOS</h3>
+                </div>
+                <span class="simulation-tag">100% TOTAL</span>
+            </div>
+
+            <div class="dice-grid" id="diceGrid"></div>
+
+            <div class="ranking-info">
+                <span class="ranking-icon">★</span>
+                <div>
+                    <strong>TRÊS MAIORES VALORES</strong>
+                   <p id="rankingText">Aguardando processamento dos indicadores estatísticos...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HORÁRIOS MONITORADOS MANTIDOS -->
+
+        <section class="result-panel">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">MONITORAMENTO PARA ENTRA NOS TRIPLOS</span>
+                    <h3>Horários monitorados</h3>
+                </div>
+                <span class="simulation-tag">TEMPO REAL</span>
+            </div>
+
+            <div class="schedule-info">
+                <span>PRÓXIMOS TENDECIA DE TRIPLOS</span>
+                <span>INTERVALO: 02 MIN</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ORDEM</th>
+                            <th>HORÁRIO</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleBody"></tbody>
+                </table>
+            </div>
+
+            <p class="disclaimer">
+Os horários representam referências estatísticas calculadas com base em probabilidades, frequências históricas e tendências identificadas nos dados analisados.
+            </p>
+        </section>
+
+        <section class="result-panel platform-panel">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">NAVEGAÇÃO EXTERNA</span>
+                    <h3>Plataforma externa</h3>
+                </div>
+                <span class="simulation-tag">PLATAFORMA</span>
+            </div>
+
+            <div class="url-form">
+                <input
+                    type="url"
+                    id="platformUrl"
+                    placeholder="https://exemplo.com"
+                    autocomplete="url"
+                >
+
+                <button id="loadPlatform" class="primary-btn">
+                    CARREGAR PLATAFORMA →
+                </button>
+            </div>
+
+            <div id="iframeContainer" class="iframe-container hidden">
+                <div class="iframe-header">
+                    <span id="iframeAddress">PLATAFORMA</span>
+                    <button id="closePlatform" class="close-btn">FECHAR ×</button>
+                </div>
+
+                <iframe
+                    id="platformFrame"
+                    title="Visualização de plataforma externa"
+                    loading="lazy"
+                    referrerpolicy="no-referrer"
+                ></iframe>
+            </div>
+
+            <p class="disclaimer">
+                Algumas páginas externas bloqueiam a incorporação por iframe.
+                Carregue apenas sites confiáveis e autorizados.
+            </p>
+        </section>
+
+        
+
     </main>
+</div>
 
-<!-- PLATAFORMA INTEGRADA -->
-<section class="platform-section">
+<div id="toast" class="toast"></div>
 
-    <div class="platform-heading">
-        <span class="section-tag">03 / INTEGRAÇÃO EXTERNA</span>
-        <h2>PLATAFORMA INTEGRADA</h2>
-        <p>Insira o endereço da plataforma que deseja visualizar.</p>
-    </div>
-
-    <div class="platform-controls">
-        <input
-            type="url"
-            id="platformUrl"
-            placeholder="https://www.exemplo.com"
-        >
-
-        <button id="loadPlatform">
-            <span>ABRIR PLATAFORMA</span>
-        </button>
-
-        <button id="reloadPlatform" type="button">
-            ATUALIZAR
-        </button>
-    </div>
-
-    <div class="platform-status" id="platformStatus">
-        AGUARDANDO ENDEREÇO DA PLATAFORMA
-    </div>
-
-    <div class="iframe-container">
-        <iframe
-            id="platformFrame"
-            src="about:blank"
-            title="Plataforma integrada"
-            loading="lazy"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen>
-        </iframe>
-    </div>
-
-</section>
-
+<script src="script.js"></script>
 </body>
 </html>
