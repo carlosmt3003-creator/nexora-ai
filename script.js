@@ -1,1106 +1,693 @@
+"use strict";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-:root {
-    --bg: #07111f;
-    --panel: #0c192a;
-    --panel2: #101f33;
-    --blue: #2789ff;
-    --purple: #9165ff;
-    --green: #20d69a;
-    --red: #ff526b;
-    --text: #edf4ff;
-    --muted: #8292aa;
-    --border: rgba(145, 174, 215, .12);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', Arial, sans-serif;
-    min-height: 100vh;
-}
-
-button, input {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-.app {
-    min-height: 100vh;
-    background:
-        radial-gradient(ellipse at 10% 0%, rgba(39,137,255,.09), transparent 35%),
-        radial-gradient(ellipse at 90% 30%, rgba(145,101,255,.07), transparent 35%),
-        var(--bg);
-}
-
-.topbar {
-    height: 82px;
-    padding: 0 5%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-    background: rgba(7,17,31,.88);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    backdrop-filter: blur(16px);
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.brand-icon {
-    width: 43px;
-    height: 43px;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, #2789ff, #7854ef);
-    border-radius: 12px;
-    font-size: 23px;
-    font-weight: 900;
-    box-shadow: 0 0 25px rgba(39,137,255,.3);
-}
-
-.brand h1 {
-    font-size: 17px;
-    letter-spacing: 1px;
-    font-weight: 900;
-}
-
-.brand h1 span,
-.footer-brand span {
-    color: var(--blue);
-}
-
-.brand small {
-    color: var(--muted);
-    font-size: 9px;
-    letter-spacing: 2px;
-}
-
-.system-status,
-.availability {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 10px;
-    color: #b5c6da;
-    letter-spacing: 1px;
-    font-weight: 700;
-}
-
-.status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 12px var(--green);
-    display: inline-block;
-}
-
-.container {
-    max-width: 1250px;
-    width: 90%;
-    margin: 0 auto;
-    padding: 42px 0;
-}
-
-.welcome {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 32px;
-}
-
-.eyebrow {
-    font-size: 10px;
-    color: var(--blue);
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-.welcome h2 {
-    margin: 10px 0;
-    font-size: clamp(25px, 4vw, 36px);
-    letter-spacing: -1.5px;
-}
-
-.welcome h2 span {
-    color: var(--blue);
-}
-
-.welcome p {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.clock-card {
-    min-width: 180px;
-    padding: 15px 20px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.clock-card small,
-.clock-card span {
-    color: var(--muted);
-    font-size: 10px;
-}
-
-.clock-card strong {
-    font-size: 25px;
-    letter-spacing: 1px;
-}
-
-.analysis-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin-bottom: 20px;
-}
-
-.analysis-card,
-.result-panel,
-.timer-panel,
-.processing-panel {
-    background: linear-gradient(145deg, rgba(16,31,51,.97), rgba(10,23,39,.97));
-    border: 1px solid var(--border);
-    border-radius: 17px;
-}
-
-.analysis-card {
-    padding: 25px;
-    min-height: 245px;
-    position: relative;
-    overflow: hidden;
-    transition: .3s;
-}
-
-.analysis-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(39,137,255,.4);
-}
-
-.blue-card {
-    box-shadow: inset 0 2px 0 rgba(39,137,255,.5);
-}
-
-.purple-card {
-    box-shadow: inset 0 2px 0 rgba(145,101,255,.5);
-}
-
-.card-icon {
-    font-size: 25px;
-    color: var(--blue);
-    margin-bottom: 15px;
-}
-
-.purple-card .card-icon {
-    color: var(--purple);
-}
-
-.card-label {
-    display: block;
-    color: var(--muted);
-    font-size: 9px;
-    letter-spacing: 2px;
-    font-weight: 800;
-}
-
-.analysis-card h3 {
-    margin: 9px 0;
-    font-size: 20px;
-}
-
-.analysis-card p {
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.7;
-    max-width: 400px;
-}
-
-.card-bottom {
-    margin-top: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.primary-btn {
-    padding: 13px 17px;
-    border: 0;
-    border-radius: 9px;
-    background: linear-gradient(110deg, #1679f5, #329cff);
-    color: white;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .5px;
-    transition: .25s;
-    box-shadow: 0 5px 20px rgba(39,137,255,.15);
-}
-
-.primary-btn span {
-    margin-left: 8px;
-}
-
-.primary-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    filter: brightness(1.15);
-    box-shadow: 0 5px 25px rgba(39,137,255,.35);
-}
-
-.purple-btn {
-    background: linear-gradient(110deg, #7550e8, #a27aff);
-}
-
-button:disabled {
-    opacity: .4;
-    cursor: not-allowed;
-    filter: grayscale(.6);
-}
-
-.timer-panel {
-    padding: 19px 22px;
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 13px;
-}
-
-.timer-info {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.timer-icon {
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    border-radius: 11px;
-    background: rgba(39,137,255,.12);
-    color: var(--blue);
-    font-size: 22px;
-}
-
-.timer-info strong {
-    font-size: 11px;
-    letter-spacing: 1px;
-}
-
-.timer-info p {
-    margin-top: 5px;
-    font-size: 11px;
-    color: var(--muted);
-}
-
-.timer-value {
-    font-size: 21px;
-    font-weight: 800;
-    color: var(--blue);
-}
-
-.timer-track,
-.processing-track {
-    grid-column: 1 / -1;
-    height: 5px;
-    background: #1b2b40;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.timer-track div,
-.processing-track div {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-    transition: width .2s linear;
-    border-radius: 20px;
-}
-
-.processing-panel,
-.result-panel {
-    padding: 25px;
-    margin-bottom: 20px;
-    animation: appear .4s ease;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.processing-header,
-.section-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.processing-header h3,
-.section-heading h3 {
-    font-size: 19px;
-    margin-top: 7px;
-}
-
-.processing-header > strong {
-    color: var(--blue);
-    font-size: 23px;
-}
-
-.ai-network {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 35px auto 25px;
-    max-width: 700px;
-}
-
-.ai-node {
-    min-width: 125px;
-    padding: 15px 8px;
-    border-radius: 13px;
-    border: 1px solid var(--border);
-    background: #10233b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    animation: pulse 1.5s infinite alternate;
-}
-
-.ai-symbol {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-size: 22px;
-    font-weight: 900;
-    color: white;
-    background: linear-gradient(135deg, #1685ff, #7550e8);
-}
-
-.gemini-symbol {
-    background: linear-gradient(135deg, #31c6bd, #815dff);
-}
-
-.claude-symbol {
-    background: linear-gradient(135deg, #d78c59, #a95d38);
-}
-
-.ai-node strong {
-    font-size: 12px;
-}
-
-.ai-node small {
-    color: var(--muted);
-    font-size: 7px;
-    letter-spacing: .5px;
-}
-
-.network-line {
-    width: 45px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-    position: relative;
-    overflow: hidden;
-}
-
-.network-line::after {
-    content: "";
-    position: absolute;
-    width: 15px;
-    height: 2px;
-    background: white;
-    animation: travel 1s linear infinite;
-}
-
-.processing-message {
-    text-align: center;
-    color: #b5c6da;
-    font-size: 12px;
-    margin-bottom: 15px;
-}
-
-.simulation-note {
-    display: block;
-    margin-top: 14px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 9px;
-}
-
-.simulation-tag {
-    color: var(--green);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    padding: 8px 10px;
-    border-radius: 7px;
-    background: rgba(32,214,154,.08);
-    border: 1px solid rgba(32,214,154,.15);
-}
-
-.scenario-result {
-    text-align: center;
-    padding: 40px 15px;
-    margin-top: 25px;
-    border: 1px solid rgba(39,137,255,.2);
-    border-radius: 14px;
-    background: radial-gradient(circle, rgba(39,137,255,.12), transparent 70%);
-}
-
-.scenario-result > span {
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-}
-
-.scenario-result strong {
-    display: block;
-    font-size: clamp(30px, 5vw, 45px);
-    margin: 15px 0;
-    color: var(--blue);
-}
-
-.scenario-result p {
-    font-size: 11px;
-    color: var(--muted);
-}
-
-.dice-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
-    margin: 25px 0;
-}
-
-.dice-card {
-    background: #10233b;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 17px 8px;
-    text-align: center;
-    position: relative;
-}
-
-.dice-card.top-three {
-    border-color: rgba(39,137,255,.6);
-    box-shadow: 0 0 18px rgba(39,137,255,.1);
-}
-
-.dice-number {
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--blue);
-}
-
-.dice-percent {
-    display: block;
-    font-size: 18px;
-    font-weight: 800;
-    margin: 9px 0;
-}
-
-.dice-bar {
-    height: 4px;
-    background: #20334c;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.dice-bar div {
-    height: 100%;
-    background: linear-gradient(90deg, var(--blue), var(--purple));
-}
-
-.top-label {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 8px;
-    color: var(--green);
-    font-weight: 800;
-}
-
-.ranking-info {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 15px;
-    background: rgba(32,214,154,.06);
-    border: 1px solid rgba(32,214,154,.15);
-    border-radius: 10px;
-}
-
-.ranking-icon {
-    color: var(--green);
-    font-size: 23px;
-}
-
-.ranking-info strong {
-    font-size: 10px;
-    letter-spacing: 1px;
-}
-
-.ranking-info p {
-    margin-top: 5px;
-    font-size: 11px;
-    color: var(--muted);
-}
-
-.liquid-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin: 30px 0;
-}
-
-.liquid-card {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 9px;
-}
-
-.liquid {
-    width: 100px;
-    height: 150px;
-    border: 2px solid rgba(255,255,255,.1);
-    border-radius: 12px 12px 25px 25px;
-    background: #13243a;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.liquid::before {
-    content: "";
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    left: -50%;
-    top: calc(100% - var(--level, 50%));
-    border-radius: 40%;
-    animation: wave 5s linear infinite;
-}
-
-.blue-liquid::before {
-    background: rgba(39,137,255,.8);
-}
-
-.green-liquid::before {
-    background: rgba(32,214,154,.8);
-}
-
-.red-liquid::before {
-    background: rgba(255,82,107,.8);
-}
-
-.liquid span {
-    position: relative;
-    z-index: 2;
-    font-size: 19px;
-    font-weight: 900;
-    text-shadow: 0 2px 8px #07111f;
-}
-
-.liquid-card strong {
-    font-size: 12px;
-}
-
-.liquid-card small {
-    font-size: 9px;
-    color: var(--muted);
-}
-
-.liquid-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    padding-top: 15px;
-    border-top: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--green);
-}
-
-.secondary-btn {
-    background: #142b45;
-    border: 1px solid var(--border);
-    color: white;
-    padding: 11px 15px;
-    border-radius: 8px;
-    font-size: 9px;
-    font-weight: 800;
-}
-
-.secondary-btn:hover {
-    border-color: var(--blue);
-}
-
-.schedule-info {
-    display: flex;
-    justify-content: space-between;
-    margin: 25px 0 15px;
-    gap: 10px;
-    color: var(--muted);
-    font-size: 9px;
-    letter-spacing: 1px;
-}
-
-.table-wrapper {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-th {
-    padding: 13px;
-    color: var(--muted);
-    font-size: 9px;
-    letter-spacing: 1px;
-    border-bottom: 1px solid var(--border);
-}
-
-td {
-    padding: 15px 13px;
-    font-size: 11px;
-    border-bottom: 1px solid var(--border);
-}
-
-td:nth-child(2) {
-    color: var(--blue);
-    font-weight: 800;
-    font-size: 14px;
-}
-
-.schedule-status {
-    color: var(--green);
-    font-size: 9px;
-    font-weight: 800;
-}
-
-.disclaimer {
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.7;
-    margin-top: 17px;
-}
-
-.url-form {
-    display: flex;
-    gap: 10px;
-    margin: 25px 0;
-}
-
-.url-form input {
-    min-width: 0;
-    flex: 1;
-    background: #081525;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    color: white;
-    padding: 14px;
-    outline: none;
-    font-size: 12px;
-}
-
-.url-form input:focus {
-    border-color: var(--blue);
-}
-
-.iframe-container {
-    width: 100%;
-    min-height: 850px;
-}
-
-.iframe-header {
-    padding: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #10233b;
-    font-size: 10px;
-    color: var(--muted);
-}
-
-.close-btn {
-    background: rgba(255,82,107,.1);
-    border: 1px solid rgba(255,82,107,.2);
-    color: var(--red);
-    border-radius: 6px;
-    padding: 7px 12px;
-    font-size: 9px;
-    font-weight: 800;
-}
-
-iframe {
-    width: 100%;
-    height: 850px;
-    border: 0;
-    background: white;
-}
-@media(max-width: 750px) {
-    iframe {
-        height: 650px;
-    }
-
-    .iframe-container {
-        min-height: 650px;
-    }
-}
-footer {
-    padding: 35px 0 10px;
-    text-align: center;
-}
-
-.footer-brand {
-    font-size: 15px;
-    font-weight: 900;
-    letter-spacing: 2px;
-}
-
-footer p {
-    margin-top: 9px;
-    color: var(--muted);
-    font-size: 9px;
-    letter-spacing: 1px;
-}
-
-.toast {
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translate(-50%, 20px);
-    background: #142b45;
-    color: white;
-    padding: 14px 20px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    font-size: 11px;
-    opacity: 0;
-    pointer-events: none;
-    transition: .3s;
-    z-index: 100;
-    text-align: center;
-    width: max-content;
-    max-width: 90%;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
-}
-
-@keyframes appear {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-    from { box-shadow: 0 0 0 rgba(39,137,255,0); }
-    to { box-shadow: 0 0 20px rgba(39,137,255,.2); }
-}
-
-@keyframes travel {
-    from { left: -15px; }
-    to { left: 100%; }
-}
-
-@keyframes wave {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-@media (max-width: 750px) {
-    .topbar {
-        padding: 0 5%;
-        height: 70px;
-    }
-
-    .brand h1 {
-        font-size: 13px;
-    }
-
-    .system-status {
-        font-size: 8px;
-    }
-
-    .container {
-        width: 92%;
-        padding-top: 28px;
-    }
-
-    .welcome {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .clock-card {
-        width: 100%;
-    }
-
-    .analysis-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .analysis-card {
-        min-height: 225px;
-    }
-
-    .card-bottom {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .primary-btn {
-        width: 100%;
-        min-height: 46px;
-    }
-
-    .dice-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .ai-node {
-        min-width: 85px;
-        padding: 12px 4px;
-    }
-
-    .network-line {
-        width: 20px;
-    }
-
-    .liquid {
-        width: 75px;
-        height: 130px;
-    }
-
-    .liquid-grid {
-        gap: 8px;
-    }
-
-    .url-form {
-        flex-direction: column;
-    }
-
-    iframe {
-        height: 400px;
-    }
-}
-
-@media (max-width: 390px) {
-    .brand small {
-        font-size: 7px;
-    }
-
-    .system-status {
-        font-size: 7px;
-        gap: 5px;
-    }
-
-    .ai-node {
-        min-width: 75px;
-    }
-
-    .ai-node strong {
-        font-size: 10px;
-    }
-
-    .network-line {
-        width: 12px;
-    }
-
-    .liquid {
-        width: 65px;
-        height: 115px;
-    }
-
-    .liquid span {
-        font-size: 15px;
-    }
-
-    .section-heading h3 {
-        font-size: 16px;
-    }
-}
-.dice-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-}
-
-.dice-card {
-    min-height: 175px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: .3s;
-}
-
-.dice-face {
-    font-family: "Arial", sans-serif;
-    font-size: 65px;
-    line-height: 1.2;
-    color: #ffffff;
-    text-shadow: 0 0 18px rgba(39,137,255,.35);
-    margin-bottom: 10px;
-}
-
-.dice-number {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #91a9c7;
-}
-
-.dice-percent {
-    color: #48a4ff;
-    font-size: 23px;
-    margin: 8px 0;
-}
-
-.dice-card.top-three {
-    border-color: #2789ff;
-    background: linear-gradient(
-        145deg,
-        #142e4b,
-        #0c192a
-    );
-}
-
-@media(max-width: 500px) {
-    .dice-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .dice-face {
-        font-size: 58px;
-    }
-}
 /* ==========================================
-   DADOS BRANCOS COM PONTOS PRETOS
+   HOMERC FEEDBACK
+   SISTEMA DE SIMULAÇÃO LOCAL
 ========================================== */
 
-.dice-grid {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 10px;
-    align-items: start;
-    width: 100%;
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-.dice-card {
-    min-width: 0;
-    padding: 10px 5px;
-    text-align: center;
-    border-radius: 12px;
-}
+    const $ = (selector) => document.querySelector(selector);
 
-.dice-face {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 9px;
-    padding: 6px;
-    box-sizing: border-box;
+    /* ELEMENTOS */
 
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 3px;
+    const analyzeBtn = $("#analyzeBtn");
+    const doublesBtn = $("#doublesBtn");
 
-    background: #ffffff;
-    border: 1px solid #d5d9e0;
-    border-radius: 9px;
+    const processingPanel = $("#processingPanel");
+    const scenarioResult = $("#scenarioResult");
+    const diceResult = $("#diceResult");
 
-    box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.16),
-        inset 0 1px 2px rgba(0, 0, 0, 0.06);
-}
+    const processingTitle = $("#processingTitle");
+    const processingMessage = $("#processingMessage");
+    const processingProgress = $("#processingProgress");
+    const analysisCountdown = $("#analysisCountdown");
 
-.pip {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: transparent;
-    justify-self: center;
-    align-self: center;
-}
+    const timerValue = $("#timerValue");
+    const timerProgress = $("#timerProgress");
+    const timerMessage = $("#timerMessage");
 
-.pip.active {
-    background: #111111;
-}
+    const toast = $("#toast");
 
-.dice-number {
-    font-size: 9px;
-    font-weight: 700;
-    margin-bottom: 4px;
-}
+    /* CONFIGURAÇÕES */
 
-.dice-percent {
-    display: block;
-    font-size: 15px;
-    font-weight: 800;
-}
+    const ANALYSIS_DURATION = 10;
+    const COOLDOWN_DURATION = 40;
 
-.dice-bar {
-    height: 4px;
-    margin-top: 7px;
-    overflow: hidden;
-    border-radius: 10px;
-}
+    let analysisRunning = false;
+    let cooldownEnd = 0;
 
-.dice-bar > div {
-    height: 100%;
-    border-radius: inherit;
-}
+    let analysisInterval = null;
+    let cooldownInterval = null;
+    let toastTimeout = null;
 
-.top-label {
-    display: block;
-    font-size: 9px;
-    font-weight: 700;
-    margin-top: 6px;
-}
+    /* ==========================================
+       NOTIFICAÇÕES
+    ========================================== */
 
-@media (max-width: 650px) {
-    .dice-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
+    function showToast(message) {
+        if (!toast) return;
+
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        clearTimeout(toastTimeout);
+
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 3000);
     }
-}
 
-@media (max-width: 360px) {
-    .dice-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* ==========================================
+       RELÓGIO
+    ========================================== */
+
+    function updateClock() {
+        const now = new Date();
+
+        const clock = $("#clock");
+        const date = $("#date");
+
+        if (clock) {
+            clock.textContent = now.toLocaleTimeString("pt-BR");
+        }
+
+        if (date) {
+            date.textContent = now.toLocaleDateString("pt-BR", {
+                weekday: "long",
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            });
+        }
+
+        const minuteKey = [
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            now.getHours(),
+            now.getMinutes()
+        ].join("-");
+
+        if (minuteKey !== updateClock.lastMinute) {
+            updateClock.lastMinute = minuteKey;
+            updateSchedule(now);
+        }
     }
-}
+
+    /* ==========================================
+       HORÁRIOS MONITORADOS
+       Marcadores de tempo, não previsões.
+    ========================================== */
+
+    function updateSchedule(now = new Date()) {
+        const tbody = $("#scheduleBody");
+
+        if (!tbody) return;
+
+        tbody.innerHTML = "";
+
+        const base = new Date(now);
+        base.setSeconds(0, 0);
+
+        for (let i = 1; i <= 5; i++) {
+            const future = new Date(
+                base.getTime() + i * 2 * 60 * 1000
+            );
+
+            const time = future.toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>0${i}</td>
+                <td>${time}</td>
+                <td>
+                    <span class="schedule-status">
+                        ● AGUARDANDO
+                    </span>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        }
+    }
+
+    /* ==========================================
+       DISTRIBUIÇÃO PERCENTUAL
+       Soma exatamente 100%.
+    ========================================== */
+
+    function generatePercentages(count, minimum = 0) {
+        const values = [];
+
+        for (let i = 0; i < count; i++) {
+            values.push(
+                Math.floor(Math.random() * 100) + 1
+            );
+        }
+
+        const total = values.reduce((a, b) => a + b, 0);
+
+        const available = 100 - minimum * count;
+
+        const exact = values.map(value =>
+            (value / total) * available
+        );
+
+        const percentages = exact.map(value =>
+            Math.floor(value) + minimum
+        );
+
+        const remainder =
+            100 - percentages.reduce((a, b) => a + b, 0);
+
+        const order = exact
+            .map((value, index) => ({
+                index,
+                decimal: value - Math.floor(value)
+            }))
+            .sort((a, b) => b.decimal - a.decimal);
+
+        for (let i = 0; i < remainder; i++) {
+            percentages[order[i].index]++;
+        }
+
+        return percentages;
+    }
+
+    /* ==========================================
+       SIMULAÇÃO DOS DADOS
+    ========================================== */
+
+    function generateDiceAnalysis() {
+        const grid = $("#diceGrid");
+        const rankingText = $("#rankingText");
+
+        if (!grid) {
+            showToast("Não foi encontrado o espaço dos dados no HTML.");
+            return;
+        }
+
+        const values = generatePercentages(6);
+
+        const pipPositions = {
+            1: [5],
+            2: [1, 9],
+            3: [1, 5, 9],
+            4: [1, 3, 7, 9],
+            5: [1, 3, 5, 7, 9],
+            6: [1, 3, 4, 6, 7, 9]
+        };
+
+        const dice = values.map((percentage, index) => ({
+            number: index + 1,
+            percentage
+        }));
+
+        dice.sort((a, b) => a.number - b.number);
+
+        const ranking = [...dice].sort(
+            (a, b) => b.percentage - a.percentage
+        );
+
+        const topThree = ranking.slice(0, 3);
+
+        grid.innerHTML = "";
+
+        dice.forEach(item => {
+            const isTop = topThree.some(
+                top => top.number === item.number
+            );
+
+            const pips = Array.from(
+                { length: 9 },
+                (_, index) => {
+                    const position = index + 1;
+
+                    return `
+                        <span class="pip ${
+                            pipPositions[item.number].includes(position)
+                                ? "active"
+                                : ""
+                        }"></span>
+                    `;
+                }
+            ).join("");
+
+            const card = document.createElement("div");
+
+            card.className =
+                `dice-card ${isTop ? "top-three" : ""}`;
+
+            card.innerHTML = `
+                <div class="dice-face">
+                    ${pips}
+                </div>
+
+                <div class="dice-number">
+                    DADO ${item.number}
+                </div>
+
+                <span class="dice-percent">
+                    ${item.percentage}%
+                </span>
+
+                <div class="dice-bar">
+                    <div style="width:${item.percentage}%"></div>
+                </div>
+
+                ${
+                    isTop
+                    ? '<span class="top-label">★ TOP 3</span>'
+                    : '<span class="top-label" style="visibility:hidden">---</span>'
+                }
+            `;
+
+            grid.appendChild(card);
+        });
+
+        if (rankingText) {
+            rankingText.textContent = ranking
+                .slice(0, 3)
+                .map(item =>
+                    `Dado ${item.number}: ${item.percentage}%`
+                )
+                .join(" · ");
+        }
+    }
+
+    /* ==========================================
+       RESULTADO DEMONSTRATIVO
+    ========================================== */
+
+    function generateScenario() {
+        const scenarioName = $("#scenarioName");
+
+        if (!scenarioName) {
+            showToast("Não foi encontrado o espaço do resultado no HTML.");
+            return;
+        }
+
+        const scenarios = [
+            "PLAYER E TIER",
+            "BANKER E TIER",
+            "BANKER",
+            "PLAYER"
+        ];
+
+        const index = Math.floor(
+            Math.random() * scenarios.length
+        );
+
+        scenarioName.textContent = scenarios[index];
+    }
+
+    /* ==========================================
+       CONTROLE DOS BOTÕES
+    ========================================== */
+
+    function setButtonsState(disabled) {
+        if (analyzeBtn) {
+            analyzeBtn.disabled = disabled;
+
+            analyzeBtn.innerHTML = disabled
+                ? "AGUARDE..."
+                : 'ANALISAR CENÁRIO <span>→</span>';
+        }
+
+        if (doublesBtn) {
+            doublesBtn.disabled = disabled;
+
+            doublesBtn.innerHTML = disabled
+                ? "AGUARDE..."
+                : 'ANALISAR DUPLOS <span>→</span>';
+        }
+    }
+
+    /* ==========================================
+       INTERVALO DE 40 SEGUNDOS
+    ========================================== */
+
+    function startCooldown() {
+        cooldownEnd = Date.now() + COOLDOWN_DURATION * 1000;
+
+        setButtonsState(true);
+
+        clearInterval(cooldownInterval);
+
+        function updateCooldown() {
+            const remaining = Math.max(
+                0,
+                Math.ceil((cooldownEnd - Date.now()) / 1000)
+            );
+
+            const minutes = String(
+                Math.floor(remaining / 60)
+            ).padStart(2, "0");
+
+            const seconds = String(
+                remaining % 60
+            ).padStart(2, "0");
+
+            if (timerValue) {
+                timerValue.textContent = `${minutes}:${seconds}`;
+            }
+
+            if (timerProgress) {
+                const percentage =
+                    (remaining / COOLDOWN_DURATION) * 100;
+
+                timerProgress.style.width = `${percentage}%`;
+            }
+
+            if (remaining > 0) {
+                if (timerMessage) {
+                    timerMessage.textContent =
+                        "Sistema em período de intervalo.";
+                }
+            } else {
+                clearInterval(cooldownInterval);
+
+                cooldownEnd = 0;
+
+                if (timerValue) {
+                    timerValue.textContent = "00:00";
+                }
+
+                if (timerProgress) {
+                    timerProgress.style.width = "0%";
+                }
+
+                if (timerMessage) {
+                    timerMessage.textContent =
+                        "Sistema disponível para novas simulações.";
+                }
+
+                setButtonsState(false);
+            }
+        }
+
+        updateCooldown();
+
+        cooldownInterval = setInterval(
+            updateCooldown,
+            250
+        );
+    }
+
+    /* ==========================================
+       PROCESSAMENTO DE 10 SEGUNDOS
+    ========================================== */
+
+    function startAnalysis(type) {
+        if (analysisRunning || Date.now() < cooldownEnd) {
+            showToast("Aguarde a liberação do sistema.");
+            return;
+        }
+
+        analysisRunning = true;
+
+        if (scenarioResult) {
+            scenarioResult.classList.add("hidden");
+        }
+
+        if (diceResult) {
+            diceResult.classList.add("hidden");
+        }
+
+        if (processingPanel) {
+            processingPanel.classList.remove("hidden");
+        }
+
+        if (processingTitle) {
+            processingTitle.textContent =
+                type === "scenario"
+                    ? "Central de simulação"
+                    : "Distribuição matemática";
+        }
+
+        const messages = [
+    "Estabelecendo conexão com a base de dados...",
+    "Processando registros históricos e frequências...",
+    "Identificando padrões e recorrências estatísticas...",
+    "Executando análise com inteligência artificial integrada...",
+    "Consolidando indicadores e finalizando a análise..."
+];
+
+        if (processingProgress) {
+            processingProgress.style.width = "0%";
+        }
+
+        if (analysisCountdown) {
+            analysisCountdown.textContent = "10s";
+        }
+
+        const startTime = Date.now();
+
+        startCooldown();
+
+        clearInterval(analysisInterval);
+
+        function updateAnalysis() {
+            const elapsed =
+                (Date.now() - startTime) / 1000;
+
+            const progress = Math.min(
+                100,
+                (elapsed / ANALYSIS_DURATION) * 100
+            );
+
+            const remaining = Math.max(
+                0,
+                Math.ceil(ANALYSIS_DURATION - elapsed)
+            );
+
+            if (processingProgress) {
+                processingProgress.style.width =
+                    `${progress}%`;
+            }
+
+            if (analysisCountdown) {
+                analysisCountdown.textContent =
+                    `${remaining}s`;
+            }
+
+            const messageIndex = Math.min(
+                messages.length - 1,
+                Math.floor(elapsed / 2.5)
+            );
+
+            if (processingMessage) {
+                processingMessage.textContent =
+                    messages[messageIndex];
+            }
+
+            if (elapsed >= ANALYSIS_DURATION) {
+                clearInterval(analysisInterval);
+                analysisInterval = null;
+
+                finishAnalysis(type);
+            }
+        }
+
+        updateAnalysis();
+
+        analysisInterval = setInterval(
+            updateAnalysis,
+            100
+        );
+    }
+
+    /* ==========================================
+       FINALIZAÇÃO
+    ========================================== */
+
+    function finishAnalysis(type) {
+        analysisRunning = false;
+
+        if (processingPanel) {
+            processingPanel.classList.add("hidden");
+        }
+
+        if (type === "scenario") {
+            generateScenario();
+
+            if (scenarioResult) {
+                scenarioResult.classList.remove("hidden");
+
+                scenarioResult.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+        } else {
+            generateDiceAnalysis();
+
+            if (diceResult) {
+                diceResult.classList.remove("hidden");
+
+                diceResult.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+        }
+
+        showToast("Simulação concluída.");
+    }
+
+    /* ==========================================
+       EVENTOS DOS BOTÕES
+    ========================================== */
+
+    if (analyzeBtn) {
+        analyzeBtn.addEventListener("click", () => {
+            startAnalysis("scenario");
+        });
+    } else {
+        console.error("Elemento #analyzeBtn não encontrado no HTML.");
+    }
+
+    if (doublesBtn) {
+        doublesBtn.addEventListener("click", () => {
+            startAnalysis("dice");
+        });
+    } else {
+        console.error("Elemento #doublesBtn não encontrado no HTML.");
+    }
+
+    /* ==========================================
+       PLATAFORMA EXTERNA
+    ========================================== */
+
+    const loadPlatform = $("#loadPlatform");
+
+    if (loadPlatform) {
+        loadPlatform.addEventListener("click", () => {
+            const input = $("#platformUrl");
+
+            if (!input) return;
+
+            const rawUrl = input.value.trim();
+
+            if (!rawUrl) {
+                showToast("Informe o endereço da plataforma.");
+                input.focus();
+                return;
+            }
+
+            let url;
+
+            try {
+                url = new URL(rawUrl);
+            } catch {
+                showToast("Informe uma URL válida.");
+                input.focus();
+                return;
+            }
+
+            if (
+                !["http:", "https:"].includes(url.protocol) ||
+                !url.hostname ||
+                url.username ||
+                url.password
+            ) {
+                showToast("Endereço não permitido.");
+                return;
+            }
+
+            const iframe = $("#platformFrame");
+            const iframeAddress = $("#iframeAddress");
+            const iframeContainer = $("#iframeContainer");
+
+            if (!iframe || !iframeContainer) {
+                showToast("Área da plataforma não encontrada.");
+                return;
+            }
+
+            iframe.src = url.href;
+
+            if (iframeAddress) {
+                iframeAddress.textContent =
+                    url.hostname.toUpperCase();
+            }
+
+            iframeContainer.classList.remove("hidden");
+
+            iframeContainer.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+    }
+
+    const closePlatform = $("#closePlatform");
+
+    if (closePlatform) {
+        closePlatform.addEventListener("click", () => {
+            const iframe = $("#platformFrame");
+            const iframeContainer = $("#iframeContainer");
+            const input = $("#platformUrl");
+
+            if (iframe) {
+                iframe.src = "about:blank";
+            }
+
+            if (iframeContainer) {
+                iframeContainer.classList.add("hidden");
+            }
+
+            if (input) {
+                input.value = "";
+            }
+
+            showToast("Visualização encerrada.");
+        });
+    }
+
+    /* ==========================================
+       INICIALIZAÇÃO
+    ========================================== */
+
+    function initialize() {
+        if (processingPanel) {
+            processingPanel.classList.add("hidden");
+        }
+
+        if (scenarioResult) {
+            scenarioResult.classList.add("hidden");
+        }
+
+        if (diceResult) {
+            diceResult.classList.add("hidden");
+        }
+
+        updateClock();
+
+        setInterval(updateClock, 1000);
+
+        updateSchedule();
+
+        if (timerValue) {
+            timerValue.textContent = "00:40";
+        }
+
+        if (timerProgress) {
+            timerProgress.style.width = "100%";
+        }
+
+        if (timerMessage) {
+            timerMessage.textContent =
+                "Sistema disponível para novas simulações.";
+        }
+
+        setButtonsState(false);
+    }
+
+    initialize();
+
+});
