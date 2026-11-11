@@ -202,6 +202,9 @@ function startCooldown({ system, button, countdown, status, progress }) {
 
 /* ANÁLISE DE CORES */
 
+
+/* ANÁLISE DE CORES */
+
 $("#colorButton").addEventListener("click", () => {
     runAnalysis({
         key: "colors",
@@ -219,14 +222,36 @@ $("#colorButton").addEventListener("click", () => {
 
             const percentage = Math.floor(Math.random() * 18) + 80;
 
-            $("#colorResult").textContent = entry;
+            const resultElement = $("#colorResult");
+
+            // ATUALIZAR RESULTADO
+            resultElement.textContent = entry;
+
+            // REMOVER CORES ANTERIORES
+            resultElement.classList.remove(
+                "banker-color",
+                "player-color"
+            );
+
+            // APLICAR COR CORRESPONDENTE
+            if (entry.includes("BANKER")) {
+                resultElement.classList.add("banker-color");
+            } else if (entry.includes("PLAYER")) {
+                resultElement.classList.add("player-color");
+            }
+
+            // ATUALIZAR PORCENTAGEM
             $("#colorPercentage").textContent = percentage + "%";
 
+            // REGISTRAR NO HISTÓRICO
             saveHistory("CORES", entry);
+
+            // FINALIZAR
             $("#colorStatus").textContent = "Análise concluída";
         }
     });
 });
+
 
 /* DADOS TRADICIONAIS */
 
