@@ -245,7 +245,7 @@ button {
 .primary-button {
     width: 100%;
     min-height: 49px;
-    background: linear-gradient(110deg, #7145df, #956cff);
+    background: linear-gradient(110deg, #5d9cef, #2e80ea);
     color: white;
     font-size: 11px;
     font-weight: 800;
@@ -624,4 +624,135 @@ body.light .bottom-nav {
 
 .history-item.history-red .history-result {
     color: #ff6176 !important;
+}
+
+
+/* RESULTADO BANKER */
+#colorResult.banker-color {
+    color: #ff4058 !important;
+    text-shadow: 0 0 12px rgba(255, 64, 88, 0.30);
+}
+
+/* RESULTADO PLAYER */
+#colorResult.player-color {
+    color: #398bff !important;
+    text-shadow: 0 0 12px rgba(57, 139, 255, 0.30);
+}
+
+/* TRIPLOS — DESTAQUE DOS 2 PRIMEIROS HORÁRIOS */
+
+.time-item.hot {
+    border: 1px solid #cc2d43 !important;
+    box-shadow: 0 0 12px rgba(255, 64, 89, 0.103);
+}
+
+/* DEMAIS HORÁRIOS SEM DESTAQUE */
+.time-item:not(.hot) {
+    border: 1px solid var(--border);
+    box-shadow: none;
+}
+
+/* NUMERAÇÃO DE 1º ATÉ 5º EM BRANCO */
+.time-item .time-rank {
+    color: #ffffff !important;
+}
+
+/* DADOS — BOLINHAS MAIS ESPAÇADAS */
+
+.die .dots {
+    display: grid;
+    grid-template-columns: repeat(3, 8px);
+    grid-template-rows: repeat(3, 8px);
+    column-gap: 7px;
+    row-gap: 7px;
+    width: max-content;
+    height: max-content;
+    flex-shrink: 0;
+    place-content: center;
+}
+
+.die .pip,
+.die.selected .pip {
+    width: 8px !important;
+    height: 8px !important;
+    min-width: 8px !important;
+    min-height: 8px !important;
+    max-width: 8px !important;
+    max-height: 8px !important;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+/* CELULAR */
+@media (max-width: 600px) {
+    .die .dots {
+        grid-template-columns: repeat(3, 7px);
+        grid-template-rows: repeat(3, 7px);
+        column-gap: 6px;
+        row-gap: 6px;
+    }
+
+    .die .pip,
+    .die.selected .pip {
+        width: 7px !important;
+        height: 7px !important;
+        min-width: 7px !important;
+        min-height: 7px !important;
+        max-width: 7px !important;
+        max-height: 7px !important;
+    }
+}
+
+/* =================================
+   TOP 1 — DESTAQUE VERMELHO
+================================= */
+
+
+
+
+
+/* CAIXA DO TOP 1 */
+.ranking-item.best {
+    
+    border: 1px solid #ff4058 !important;
+    box-shadow: 0 0 13px rgba(255, 45, 70, 0.20);
+}
+
+/* TEXTO DO TOP 1 */
+.ranking-item.best span {
+    color: #ffffff !important;
+}
+
+/* PORCENTAGEM DO TOP 1 */
+.ranking-item.best strong {
+    color: #e44156c4 !important;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(202, 37, 59, 0.212);
+}
+
+/* SOMBRA BRANCA — EFEITO FLUTUANTE */
+.die {
+    box-shadow:
+        0 5px 12px rgba(255, 255, 255, 0.07),
+        0 12px 22px rgba(0, 0, 0, 0.30);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+/* DADOS DESTACADOS */
+.die.selected {
+    box-shadow:
+        0 8px 18px rgba(255, 255, 255, 0.14),
+        0 14px 25px rgba(0, 0, 0, 0.35),
+        0 0 12px rgba(255, 255, 255, 0.08) !important;
+}
+
+/* EFEITO AO PASSAR O MOUSE */
+.die:hover {
+    box-shadow:
+        0 8px 20px rgba(255, 255, 255, 0.13),
+        0 14px 25px rgba(0, 0, 0, 0.35);
 }
