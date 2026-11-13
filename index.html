@@ -5,20 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="theme-color" content="#080d18">
 
     <title>MEGA SIC BAC</title>
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Ícone do navegador -->
     <link rel="icon" type="image/png" href="dados.png">
-
-    <!-- Ícone da tela inicial -->
     <link rel="apple-touch-icon" href="dados.png">
-
-    <!-- Configuração PWA -->
     <link rel="manifest" href="manifest.json">
 </head>
 
@@ -28,38 +22,82 @@
 
     <header class="header">
         <div class="brand">
-           
             <div>
                 <h1>MEGA SIC BAC</h1>
                 <span>PAINEL DE ANÁLISE</span>
             </div>
         </div>
+
         <button class="icon-button" id="settingsButton">⚙</button>
     </header>
 
     <main>
 
+        
+<!-- AVISO DE GRANDE ATUALIZAÇÃO -->
+<div class="update-banner">
+
+    <div class="update-banner-top">
+        <span class="update-badge">COMUNICADO OFICIAL</span>
+        <span class="update-date">16.11.2026</span>
+    </div>
+
+    <div class="update-banner-content">
+
+        <div class="update-icon">🚀</div>
+
+        <div class="update-text">
+            <h2>GRANDE ATUALIZAÇÃO DO SISTEMA</h2>
+
+            <p>
+                No dia <strong>16/11</strong>, o MEGA SIC BAC receberá
+                uma grande atualização, trazendo novas funcionalidades,
+                melhorias e novidades para o sistema.
+            </p>
+
+            <span>Uma nova experiência está chegando. Fique atento!</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+        <!-- ÁREA DO JOGO -->
         <section id="inicio" class="section">
+
             <div class="section-heading">
                 <h2>ÁREA DO JOGO</h2>
                 <button id="toggleGame">Expandir</button>
             </div>
 
             <div class="game-card" id="gameCard">
-                <iframe id="gameFrame" src="about:blank"
-                    title="Área configurável do jogo"></iframe>
-                <p id="gamePlaceholder">Configure o endereço do iframe nas configurações.</p>
+                <iframe
+                    id="gameFrame"
+                    src="about:blank"
+                    title="Área configurável do jogo">
+                </iframe>
+
+                <p id="gamePlaceholder">
+                    Configure o endereço do iframe nas configurações.
+                </p>
             </div>
+
         </section>
+
 
         <div class="analysis-grid">
 
+            <!-- ANÁLISE DE CORES -->
             <section id="cores" class="panel">
+
                 <div class="panel-header">
                     <div>
                         <span class="eyebrow">ANÁLISE 01</span>
                         <h2>ANÁLISE DE CORES</h2>
                     </div>
+
                     <span class="status-dot"></span>
                 </div>
 
@@ -74,30 +112,77 @@
                     <div id="colorProgress" class="progress-fill"></div>
                 </div>
 
-                <p id="colorStatus" class="status-text">Sistema disponível</p>
+                <p id="colorStatus" class="status-text">
+                    Sistema disponível
+                </p>
 
                 <button class="primary-button" id="colorButton">
                     ANALISAR CORES
                 </button>
-                <div class="manual-result">
-    <span>REGISTRAR RESULTADO</span>
 
-    <div class="manual-buttons">
-        <button class="green-button" id="colorGreen">GREEN</button>
-        <button class="red-button" id="colorRed">RED</button>
-    </div>
-</div>
+                <!-- CENTRAL DE IA - CORES -->
+                <div class="visual-processing visual-disabled">
+
+                    <div class="visual-processing-title">
+                        CENTRAL DE INTELIGÊNCIA ARTIFICIAL
+                    </div>
+
+                    <div class="visual-processing-track">
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/gpt.png" alt="GPT">
+                            </div>
+                            <div class="visual-agent-name">GPT</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/claude.png" alt="Claude">
+                            </div>
+                            <div class="visual-agent-name">CLAUDE</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/gemini.png" alt="Gemini">
+                            </div>
+                            <div class="visual-agent-name">GEMINI</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/deepseek.png" alt="DeepSeek">
+                            </div>
+                            <div class="visual-agent-name">DEEPSEEK</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                    </div>
+
+                    <div class="visual-processing-message">
+                        Integrações em desenvolvimento
+                    </div>
+
+                </div>
 
                 <div class="countdown" id="colorCountdown"></div>
+
             </section>
 
+
+            <!-- ANÁLISE DE DUPLOS -->
             <section id="duplos" class="panel">
+
                 <div class="panel-header">
                     <div>
                         <span class="eyebrow">ANÁLISE 02</span>
                         <h2>ANÁLISE DE DUPLOS</h2>
                     </div>
-                    
+
                     <span class="status-dot"></span>
                 </div>
 
@@ -111,10 +196,14 @@
                 </div>
 
                 <div class="result-box">
-                    <span class="result-label">TRÊS MAIORES PERCENTUAIS</span>
+                    <span class="result-label">
+                        TRÊS MAIORES PERCENTUAIS
+                    </span>
+
                     <div id="doubleResult" class="ranking">
                         Aguardando análise
                     </div>
+
                     <p>PROTEÇÃO ATÉ G2</p>
                 </div>
 
@@ -122,52 +211,111 @@
                     <div id="doubleProgress" class="progress-fill"></div>
                 </div>
 
-                <p id="doubleStatus" class="status-text">Sistema disponível</p>
+                <p id="doubleStatus" class="status-text">
+                    Sistema disponível
+                </p>
 
                 <button class="primary-button" id="doubleButton">
                     ANALISAR MELHOR DUPLO
                 </button>
-                <div class="manual-result">
-    <span>REGISTRAR RESULTADO</span>
 
-    <div class="manual-buttons">
-        <button class="green-button" id="doubleGreen">GREEN</button>
-        <button class="red-button" id="doubleRed">RED</button>
-    </div>
-</div>
+                <!-- CENTRAL DE IA - DUPLOS -->
+                <div class="visual-processing visual-disabled">
+
+                    <div class="visual-processing-title">
+                        CENTRAL DE INTELIGÊNCIA ARTIFICIAL
+                    </div>
+
+                    <div class="visual-processing-track">
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/gpt.png" alt="GPT">
+                            </div>
+                            <div class="visual-agent-name">GPT</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/claude.png" alt="Claude">
+                            </div>
+                            <div class="visual-agent-name">CLAUDE</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/gemini.png" alt="Gemini">
+                            </div>
+                            <div class="visual-agent-name">GEMINI</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                        <div class="visual-agent">
+                            <div class="visual-agent-icon">
+                                <img src="img/deepseek.png" alt="DeepSeek">
+                            </div>
+                            <div class="visual-agent-name">DEEPSEEK</div>
+                            <span class="visual-coming-soon">EM BREVE</span>
+                        </div>
+
+                    </div>
+
+                    <div class="visual-processing-message">
+                        Integrações em desenvolvimento
+                    </div>
+
+                </div>
 
                 <div class="countdown" id="doubleCountdown"></div>
+
             </section>
 
         </div>
 
+
+        <!-- MELHORES HORÁRIOS -->
         <section id="triplos" class="panel">
+
             <div class="panel-header">
                 <div>
                     <span class="eyebrow">ANÁLISE 03</span>
                     <h2>MELHORES HORÁRIOS — TRIPLOS</h2>
                 </div>
+
                 <span id="clock">--:--:--</span>
             </div>
 
             <div class="time-list" id="timeList"></div>
+
         </section>
 
+
+        <!-- HISTÓRICO -->
         <section id="historico" class="panel">
+
             <div class="panel-header">
                 <div>
                     <span class="eyebrow">REGISTROS</span>
                     <h2>HISTÓRICO</h2>
                 </div>
-                <button id="clearHistory" class="secondary-button">Limpar</button>
+
+                <button id="clearHistory" class="secondary-button">
+                    Limpar
+                </button>
             </div>
 
             <div id="historyList" class="history-list">
                 Nenhum registro disponível.
             </div>
+
         </section>
 
+
+        <!-- CONFIGURAÇÕES -->
         <section id="configuracoes" class="panel settings-panel">
+
             <div class="panel-header">
                 <div>
                     <span class="eyebrow">PERSONALIZAÇÃO</span>
@@ -187,27 +335,54 @@
 
             <label class="setting-row iframe-setting">
                 <span>Endereço do iframe</span>
-                <input type="url" id="iframeUrl"
+                <input
+                    type="url"
+                    id="iframeUrl"
                     placeholder="https://exemplo.com">
             </label>
 
             <button class="primary-button" id="saveSettings">
                 SALVAR CONFIGURAÇÕES
             </button>
+
         </section>
 
     </main>
 
+
+    <!-- NAVEGAÇÃO INFERIOR -->
     <nav class="bottom-nav">
-        <a href="#inicio"><span>⌂</span>Início</a>
-        <a href="#cores"><span>◉</span>Cores</a>
-        <a href="#duplos"><span>⚄</span>Duplos</a>
-        <a href="#triplos"><span>◷</span>Triplos</a>
-        <a href="#configuracoes"><span>⚙</span>Ajustes</a>
+
+        <a href="#inicio">
+            <span>⌂</span>
+            Início
+        </a>
+
+        <a href="#cores">
+            <span>◉</span>
+            Cores
+        </a>
+
+        <a href="#duplos">
+            <span>⚄</span>
+            Duplos
+        </a>
+
+        <a href="#triplos">
+            <span>◷</span>
+            Triplos
+        </a>
+
+        <a href="#configuracoes">
+            <span>⚙</span>
+            Ajustes
+        </a>
+
     </nav>
 
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
